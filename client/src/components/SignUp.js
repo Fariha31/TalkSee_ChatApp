@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
+import clsx from 'clsx';
 import {
   TextField,
   Grid,
   Button,
-  FilledInput,
   InputAdornment,
   InputLabel,
   FormControl,
+  Input,
   IconButton,
+  Typography,
 } from "@material-ui/core";
+import EmailIcon from '@material-ui/icons/Email';
+import LockIcon from '@material-ui/icons/Lock';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link, useHistory } from "react-router-dom";
+import { grey, cyan, brown} from '@material-ui/core/colors';
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import equals from "validator/lib/equals";
@@ -21,17 +28,15 @@ import { signup } from "../api/auth";
 import { isAuthenticated } from "../clientStorages.js/auth";
 
 const useStyles = makeStyles((theme) => ({
-  heading: {
-    fontStyle: "cursive",
-    color: "secondary",
-    padding: "1rem",
-  },
+   
   textfield: {
-    marginTop: theme.spacing(2),
+     margin: theme.spacing(1),
   },
-  SignUpbtn: {
-    marginTop: "0.4rem",
-  },
+  margin:{
+    margin: theme.spacing(1),
+    marginLeft:"0.5rem",
+  }
+   
 }));
 const SignUp = () => {
   const classes = useStyles();
@@ -74,9 +79,7 @@ const SignUp = () => {
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
-  const handleClickShowPassword1 = () => {
-    setValues({ ...values, showPassword1: !values.showPassword1 });
-  };
+   
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -129,112 +132,162 @@ const SignUp = () => {
     }
   };
   const SignUpHeader = () => (
-    <Grid container style={{ marginTop: "0.6rem" }}>
-      <Grid item xm={5} md={4}></Grid>
-      <Grid item xm={2} md={4}>
-        <h2 className={classes.heading}>SignUp</h2>
+    <Grid container >
+      <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
+      <Grid item xs={10} sm={8} xm={2} md={4}>
+         <Typography variant="headline" style={{marginBottom:"2rem", 
+         marginTop:"3rem",
+         textAlign:"center",
+         fontSize:"5rem",
+         color:brown[300],
+         fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
+          component="h1">TalkSee</Typography>
+        <hr/>
+        <Grid container style={{textAlign:"center"}}>
+          <Grid item xs={6} >
+            <Link className="header"  to="/login">Sign In</Link>      
+          </Grid>
+          <Grid item xs={6}>
+            <Link className="active-header" to="/signup">Sign Up</Link>
+          </Grid>
+
+        </Grid>   
       </Grid>
-      <Grid item xm={5} md={4}></Grid>
+      
+    <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
+ 
     </Grid>
   );
   const SignUpForm = () => (
     <div className="signup-container">
       <Grid container>
-        <Grid item xs={1} md={4}></Grid>
-        <Grid item xs={10} md={4}>
+        <Grid item xs={1} sm={3} md={4}></Grid>
+        <Grid item xs={10} sm ={6} md={4}>
           <TextField
             className={classes.textfield}
             id="filled-start-adornment"
+             style={{marginTop:"2rem"}}
             value={values.username}
-            label="Username"
+            label= {
+              <div> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Username </Typography>
+             <Typography variant="headline" style={{color:"red"}}>*</Typography>
+                  </div>
+            }
             name="username"
-            variant="filled"
+            
             fullWidth
             onChange={handleTextChange}
+             InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+             <AccountCircleIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          ),
+        }}
           />
           <TextField
             className={classes.textfield}
-            label="Email"
+            label= {
+              <div> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic" }}> Email Address </Typography>
+             <Typography variant="headline" style={{color:"red"  }}>*</Typography>
+                  </div>
+            }
             id="filled-start-adornment1"
+            
             name="email"
             value={values.email}
             fullWidth
-            variant="filled"
             onChange={handleTextChange}
+             InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+             <EmailIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          ),
+        }}
           />
-          <FormControl variant="filled" fullWidth noValidate>
-            <InputLabel
-              style={{ padding: "1rem", paddingLeft: "0" }}
-              htmlFor="filled-adornment-password"
-            >
-              Password
-            </InputLabel>
-            <FilledInput
-              id="filled-adornment-password"
-              name="password"
-              type={values.showPassword ? "text" : "password"}
-              fullWidth
-              className={classes.textfield}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl variant="filled" fullWidth noValidate>
-            <InputLabel
-              style={{ padding: "1rem", paddingLeft: "0" }}
-              htmlFor="filled-adornment-password"
-            >
-              Confirm Password
-            </InputLabel>
-            <FilledInput
-              id="filled-adornment-confirmPassword"
-              name="confirmPassword"
-              type={values.showPassword1 ? "text" : "password"}
-              fullWidth
-              className={classes.textfield}
-              value={values.confirmPassword}
-              onChange={handleChange("confirmPassword")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword1}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword1 ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <Button
-            className={classes.SignUpbtn}
+              
+        <FormControl className={clsx(classes.margin, classes.textField)} fullWidth>
+         <InputLabel htmlFor="standard-adornment-password"> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Password</Typography>
+             <Typography variant="headline" style={{color:"red",marginLeft:"0.4rem" }}>*</Typography>
+         </InputLabel>
+                    <Input
+            id="standard-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            name="password"
+            value={values.password}
+            onChange={handleChange('password')}
+              
+          startAdornment= {
+            <InputAdornment position="start">
+             <LockIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          }
+        
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+         
+          <FormControl className={clsx(classes.margin, classes.textField)} fullWidth>
+                 <InputLabel htmlFor="standard-adornment-password"> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Confirm Password</Typography>
+             <Typography variant="headline" style={{color:"red",marginLeft:"0.4rem" }}>*</Typography>
+         </InputLabel>
+           <Input
+            id="standard-adornment-confirmPassword"
+            type={values.showPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            value={values.confirmPassword}
+            onChange={handleChange('confirmPassword')}
+             startAdornment= {
+            <InputAdornment position="start">
+             <VpnKeyIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+    
+         <Button
+             style={{ color: grey[50],
+              backgroundColor:cyan[600],
+              fontWeight:"bold", 
+              borderRadius:"1rem" , 
+              marginTop: "0.8rem",
+              padding: "0.5rem",
+              marginLeft:"1rem" }}
+            className= "loginbtn"
             variant="contained"
-            color="secondary"
             fullWidth
             onClick={Register}
           >
-            SignUp
+            Sign Up
           </Button>
-          <p style={{ padding: "1rem" }}>
-            Already have an Account?
-            <Link to="/login">Log In</Link>
-          </p>
         </Grid>
-        <Grid item xs={1} md={4}></Grid>
+        <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>
     </div>
   );

@@ -15,24 +15,32 @@
   font-weight: bold;
   text-transform: capitalize;
 }
-/*SignUp Component*/
-.signup-container {
-  height: 100vh;
-}
-/*Login Component*/
+
+/*Login+Signup Component*/
 .header {
-  color: black;
-  font-size: 2rem;
+  color: #8dadaf;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Helvetica, sans-serif;
+}
+.active-header {
+  color: rgb(0, 172, 193);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 5px dotted #a1b1b3;
+  font-size: 1.5rem;
   font-weight: bold;
   font-family: Helvetica, sans-serif;
 }
 .header:hover {
-  color: rgb(0, 172, 193);
-  font-weight: bold;
-  font-size: 2rem;
-  font-family: Helvetica, sans-serif;
   text-decoration: none;
+  color: #8dadaf;
 }
+.active-header:hover {
+  text-decoration: none;
+  color: rgb(0, 172, 193);
+}
+
 .loginbtn:focus {
   outline: none !important;
 }

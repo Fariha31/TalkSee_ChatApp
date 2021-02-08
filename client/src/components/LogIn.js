@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from 'clsx';
 import {
   TextField,
   Grid,
   Button,
-  FormControlLabel,
+  FormControl,
+  Input,
   InputAdornment,
+  FormControlLabel,
   Checkbox,
-  Typography
+  Typography,
+  IconButton,
+  InputLabel
 } from "@material-ui/core";
-import { grey, cyan} from '@material-ui/core/colors';
+import { grey, cyan, brown} from '@material-ui/core/colors';
 import EmailIcon from '@material-ui/icons/Email';
-import LockIcon from '@material-ui/icons/Lock';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
@@ -21,9 +27,13 @@ import { login } from "../api/auth";
 import { authentication, isAuthenticated } from "../clientStorages.js/auth";
 
 const useStyles = makeStyles((theme) => ({
-   margin: {
+   textField: {
     margin: theme.spacing(2),
   },
+  margin:{
+    margin: theme.spacing(2),
+    marginLeft:"0.9rem",
+  }
 }));
 const LogIn = () => {
   const classes = useStyles();
@@ -43,6 +53,20 @@ const LogIn = () => {
     loading: false,
   });
   const { email, password, errorMessage, loading } = values;
+  const handleChange = (prop) => (event) => {
+    setValues({
+      ...values,
+      [prop]: event.target.value,
+      errorMessage: "",
+    });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+   const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const handleTextChange = (evt) => {
     setValues({
       ...values,
@@ -81,32 +105,40 @@ const LogIn = () => {
     }
   };
   const LogInHeader = () => (
-    <Grid container style={{ marginTop: "7rem" ,marginBottom:"2rem"}}>
+    <Grid container >
       <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
       <Grid item xs={10} sm={8} xm={2} md={4}>
-        <Grid container>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={5}>
-            <Link className="header" to="/login">Sign In</Link>      
+         <Typography variant="headline" style={{marginBottom:"2rem", 
+         marginTop:"3rem",
+         textAlign:"center",
+         fontSize:"5rem",
+         color:brown[300],
+         fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
+          component="h1">TalkSee</Typography>
+        <hr/>
+        <Grid container style={{textAlign:"center"}}>
+          <Grid item xs={6} >
+            <Link className="active-header"  to="/login">Sign In</Link>      
           </Grid>
-           <Grid item xs={1}></Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Link className="header" to="/signup">Sign Up</Link>
           </Grid>
-          
-        </Grid>
-          <hr/>
-           </Grid>
-      <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
+
+        </Grid>   
+      </Grid>
+      
+    <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
+ 
     </Grid>
   );
   const LogInForm = () => (
     <div className="Login-container">
       <Grid container>
-        <Grid item xs={1} sm={2} md={4}></Grid>
-        <Grid item xs={10} sm={8} md={4}>
+        <Grid item xs={1} sm={3} md={4}></Grid>
+        <Grid item xs={10} sm={6} md={4}>
            <TextField
-           className={classes.margin}
+           className={classes.textField}
+           style={{marginTop:"2rem"}}
             label={
               <div> 
              <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Email Address </Typography>
@@ -127,28 +159,39 @@ const LogIn = () => {
         }}
           />
           
-          <TextField
-        className={classes.margin}
-         label= {
-              <div> 
-             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic" }}> Password </Typography>
-             <Typography variant="headline" style={{color:"red"}}>*</Typography>
-                  </div>
-                  }
-            id="password-field"
+         <FormControl className={clsx(classes.margin, classes.textField)} fullWidth>
+         <InputLabel htmlFor="standard-adornment-password"> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Password</Typography>
+             <Typography variant="headline" style={{color:"red",marginLeft:"0.4rem"}}>*</Typography>
+         </InputLabel>
+                    <Input
+            id="standard-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
             name="password"
             value={values.password}
-             type="password"
-            fullWidth
-            onChange={handleTextChange}
-        InputProps={{
-          startAdornment: (
+            onChange={handleChange('password')}
+              
+          startAdornment= {
             <InputAdornment position="start">
-             <LockIcon style={{ color: grey[600] }}/>
+             <VpnKeyIcon style={{ color: grey[600] }}/>
             </InputAdornment>
-          ),
-        }}
-         />
+          }
+        
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+         
+         
            
             <Button
              style={{ color: grey[50],
@@ -166,18 +209,18 @@ const LogIn = () => {
             Sign In
           </Button>
            
-          <hr/>
+          <hr style={{ marginLeft:"1rem"}}/>
           <FormControlLabel
           style={{ marginLeft: "0.2rem"}}
           value="end"
           control={<Checkbox color="primary" />}
           label={
-             <Typography variant="headline" style ={{fontSize:"0.9rem"  ,marginRight:"0rem"}} > Forgot Password? </Typography>
+             <Typography variant="headline" style ={{fontSize:"0.9rem"}} > Forgot Password? </Typography>
                   }
           labelPlacement="end"
           />
         </Grid>
-        <Grid item xs={1} sm={2} md={4}></Grid>
+        <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>
     </div>
   );
