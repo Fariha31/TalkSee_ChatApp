@@ -54,7 +54,7 @@ const AlertBar = ({ type, message, autoClose }) => {
   const Icon = variantIcon[type];
   return (
     <Snackbar
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       open={open}
       autoHideDuration={autoClose}
       onClose={handleClose}

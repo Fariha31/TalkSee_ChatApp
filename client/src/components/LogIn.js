@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import {
   TextField,
   Grid,
   Button,
-  FilledInput,
+  FormControlLabel,
   InputAdornment,
-  InputLabel,
-  FormControl,
-  IconButton,
+  Checkbox,
+  Typography
 } from "@material-ui/core";
+import { grey, cyan} from '@material-ui/core/colors';
+import EmailIcon from '@material-ui/icons/Email';
+import LockIcon from '@material-ui/icons/Lock';
 import { Link, useHistory } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
@@ -20,16 +21,8 @@ import { login } from "../api/auth";
 import { authentication, isAuthenticated } from "../clientStorages.js/auth";
 
 const useStyles = makeStyles((theme) => ({
-  heading: {
-    fontStyle: "cursive",
-    color: "secondary",
-    padding: "1rem",
-  },
-  textfield: {
-    marginTop: theme.spacing(2),
-  },
-  SignUpbtn: {
-    marginTop: "0.4rem",
+   margin: {
+    margin: theme.spacing(2),
   },
 }));
 const LogIn = () => {
@@ -43,28 +36,13 @@ const LogIn = () => {
       history.push("/user/dashboard");
   }, [history]);
   const [values, setValues] = useState({
-    email: "fariha@gmail.com",
-    password: "1234567",
+    email: "",
+    password: "",
     errorMessage: "",
     showPassword: false,
     loading: false,
   });
   const { email, password, errorMessage, loading } = values;
-  const handleChange = (prop) => (event) => {
-    setValues({
-      ...values,
-      [prop]: event.target.value,
-      errorMessage: "",
-    });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
   const handleTextChange = (evt) => {
     setValues({
       ...values,
@@ -103,74 +81,103 @@ const LogIn = () => {
     }
   };
   const LogInHeader = () => (
-    <Grid container style={{ marginTop: "0.6rem" }}>
-      <Grid item xm={5} md={4}></Grid>
-      <Grid item xm={2} md={4}>
-        <h2 className={classes.heading}>Login</h2>
-      </Grid>
-      <Grid item xm={5} md={4}></Grid>
+    <Grid container style={{ marginTop: "7rem" ,marginBottom:"2rem"}}>
+      <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
+      <Grid item xs={10} sm={8} xm={2} md={4}>
+        <Grid container>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={5}>
+            <Link className="header" to="/login">Sign In</Link>      
+          </Grid>
+           <Grid item xs={1}></Grid>
+          <Grid item xs={5}>
+            <Link className="header" to="/signup">Sign Up</Link>
+          </Grid>
+          
+        </Grid>
+          <hr/>
+           </Grid>
+      <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
     </Grid>
   );
   const LogInForm = () => (
     <div className="Login-container">
       <Grid container>
-        <Grid item xs={1} md={4}></Grid>
-        <Grid item xs={10} md={4}>
-          <TextField
-            className={classes.textfield}
-            label="Email"
-            id="filled-start-adornment1"
+        <Grid item xs={1} sm={2} md={4}></Grid>
+        <Grid item xs={10} sm={8} md={4}>
+           <TextField
+           className={classes.margin}
+            label={
+              <div> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Email Address </Typography>
+             <Typography variant="headline" style={{color:"red"}}>*</Typography>
+                  </div>
+                  }
+            id="email-field"
             name="email"
             value={values.email}
             fullWidth
-            variant="filled"
             onChange={handleTextChange}
+             InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+             <EmailIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          ),
+        }}
           />
-          <FormControl variant="filled" fullWidth noValidate>
-            <InputLabel
-              style={{ padding: "1rem", paddingLeft: "0" }}
-              htmlFor="filled-adornment-password"
-            >
-              Password
-            </InputLabel>
-            <FilledInput
-              id="filled-adornment-password"
-              name="password"
-              type={values.showPassword ? "text" : "password"}
-              fullWidth
-              className={classes.textfield}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-
-          <Button
-            className={classes.SignUpbtn}
+          
+          <TextField
+        className={classes.margin}
+         label= {
+              <div> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic" }}> Password </Typography>
+             <Typography variant="headline" style={{color:"red"}}>*</Typography>
+                  </div>
+                  }
+            id="password-field"
+            name="password"
+            value={values.password}
+             type="password"
+            fullWidth
+            onChange={handleTextChange}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+             <LockIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          ),
+        }}
+         />
+           
+            <Button
+             style={{ color: grey[50],
+              backgroundColor:cyan[600],
+              fontWeight:"bold", 
+              borderRadius:"1rem" , 
+              marginTop: "0.8rem",
+              padding: "0.5rem",
+              marginLeft:"1rem" }}
+            className= "loginbtn"
             variant="contained"
-            color="secondary"
             fullWidth
             onClick={Register}
           >
-            LogIn
+            Sign In
           </Button>
-          <p style={{ padding: "1rem" }}>
-            Don't have an Account?
-            <Link to="/signup">SignUp</Link>
-          </p>
+           
+          <hr/>
+          <FormControlLabel
+          style={{ marginLeft: "0.2rem"}}
+          value="end"
+          control={<Checkbox color="primary" />}
+          label={
+             <Typography variant="headline" style ={{fontSize:"0.9rem"  ,marginRight:"0rem"}} > Forgot Password? </Typography>
+                  }
+          labelPlacement="end"
+          />
         </Grid>
-        <Grid item xs={1} md={4}></Grid>
+        <Grid item xs={1} sm={2} md={4}></Grid>
       </Grid>
     </div>
   );
@@ -179,7 +186,7 @@ const LogIn = () => {
       {loading && <LinearBuffer />}
       {LogInHeader()}
       {errorMessage && (
-        <AlertBar type="error" message={errorMessage} autoClose={6000} />
+        <AlertBar type="error" message={errorMessage} autoClose={5000} />
       )}
       {LogInForm()}
     </div>

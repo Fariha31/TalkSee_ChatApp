@@ -9,8 +9,7 @@ const App = () => {
   return (
     
       <BrowserRouter>
-        <Header />
-         
+        
         <Switch>
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={LogIn} />
