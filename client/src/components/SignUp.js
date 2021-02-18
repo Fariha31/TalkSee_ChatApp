@@ -79,6 +79,9 @@ const SignUp = () => {
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
+  const handleClickShowConfirmPassword = () => {
+    setValues({ ...values, showPassword1: !values.showPassword1 });
+  };
    
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -248,7 +251,7 @@ const SignUp = () => {
          </InputLabel>
            <Input
             id="standard-adornment-confirmPassword"
-            type={values.showPassword ? 'text' : 'password'}
+            type={values.showPassword1 ? 'text' : 'password'}
             name="confirmPassword"
             value={values.confirmPassword}
             onChange={handleChange('confirmPassword')}
@@ -261,10 +264,10 @@ const SignUp = () => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
+                  onClick={handleClickShowConfirmPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  {values.showPassword1 ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
