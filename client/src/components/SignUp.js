@@ -43,9 +43,9 @@ const SignUp = () => {
   let history = useHistory();
   useEffect(() => {
     if (isAuthenticated() && isAuthenticated().role === 1)
-      history.push("/admin/dashboard");
+      history.push("/dashboard");
     else if (isAuthenticated() && isAuthenticated().role === 0)
-      history.push("/user/dashboard");
+      history.push("/dashboard");
   }, [history]);
   const [values, setValues] = useState({
     username: "",

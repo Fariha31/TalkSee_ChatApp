@@ -3,7 +3,12 @@ const Joi = require("@hapi/joi");
 const SignupSchema = mongoose.Schema(
   {
     username: String,
-    email: String,
+    email: 
+    { type: String,
+    trim: true,
+    unique:true,
+    lowercase:true,
+},
     password: String,
     role: {
       type: Number,
@@ -17,7 +22,6 @@ const Signup = mongoose.model("signUp", SignupSchema);
 function validateSignup(data) {
   const schema = Joi.object({
     username: Joi.string().alphanum().min(5).max(30).required(),
-
     email: Joi.string().email({
       minDomainSegments: 2,
       tlds: { allow: ["com"] },

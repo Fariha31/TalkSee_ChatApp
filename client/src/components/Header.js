@@ -15,9 +15,7 @@ const Header = ({ history }) => {
   const showNavbar = () => (
     <div>
       <nav id="nav" className="navbar navbar-expand-lg navbar-light mt-0">
-        <img
-           
-        />
+
         <button
           className="navbar-toggler"
           type="button"
@@ -38,66 +36,21 @@ const Header = ({ history }) => {
               mt-lg-0"
             style={{ padding: "0.6rem" }}
           >
-            {!isAuthenticated() && (
-              <Fragment>
-                <li className="nav-item">
-                  <Link to="/" className="nav-link">
-                    <i className="fa fa-home" aria-hidden="true"></i> Home
-                  </Link>
-                </li>
-
-                <li className="nav-item">
-                  <Link to="/signup" className="nav-link">
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>{" "}
-                    Signup
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link">
-                    <i className="fa fa-sign-in" aria-hidden="true"></i> Login
-                  </Link>
-                </li>
-              </Fragment>
-            )}
+            
 
             {isAuthenticated() && isAuthenticated().role === 0 && (
               <Fragment>
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">
-                    Pages
+                  <Link to="/notFound" className="nav-link ">
+                     
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link to="/" className="nav-link">
-                    Contact Us
+                <li className="nav-item ">
+                  <Link to="/"  className="nav-link " >
+                     
                   </Link>
                 </li>
-              </Fragment>
-            )}
-            {isAuthenticated() && isAuthenticated().role === 1 && (
-              <Fragment>
-                <li className="nav-item">
-                  <Link to="/admin/dashboard" className="nav-link">
-                    <i className="fa fa-home" aria-hidden="true"></i> Dashboard
-                  </Link>
-                </li>
-              </Fragment>
-            )}
-            {isAuthenticated() && (
-              <Fragment>
-                <li className="nav-item">
-                  <Link to="/" className="nav-link">
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/home/Items" className="nav-link">
-                    Gallery
-                  </Link>
-                </li>
-                
-
-                <li className="nav-item">
+                 <li className="nav-item">
                   <button
                     className="btn text-decoration-none btn-link   pl-0"
                     onClick={handleLogOut}
@@ -107,6 +60,8 @@ const Header = ({ history }) => {
                 </li>
               </Fragment>
             )}
+             
+            
           </ul>
         </div>
       </nav>

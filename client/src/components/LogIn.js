@@ -90,8 +90,8 @@ const LogIn = () => {
           authentication(response.data.token, response.data.user);
 
           if (isAuthenticated() && isAuthenticated().role === 1)
-            history.push("/admin/dashboard");
-          else history.push("/user/dashboard");
+            history.push("/dashboard");
+          else history.push("/dashboard");
           setValues({ ...values, loading: false });
         })
         .catch((err) => {
@@ -210,15 +210,7 @@ const LogIn = () => {
           </Button>
            
           <hr style={{ marginLeft:"1rem"}}/>
-          <FormControlLabel
-          style={{ marginLeft: "0.2rem"}}
-          value="end"
-          control={<Checkbox color="primary" />}
-          label={
-             <Typography variant="headline" style ={{fontSize:"0.9rem"}} > Forgot Password? </Typography>
-                  }
-          labelPlacement="end"
-          />
+          <Link to="/signup"  >Forgot Password?</Link>
         </Grid>
         <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>

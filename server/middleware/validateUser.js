@@ -1,7 +1,7 @@
-const { validate } = require("../models/SignUp");
+const { validateSignup } = require("../models/SignUp");
 const { validateLogin } = require("../models/SignUp");
 function validateSignupUser(req, res, next) {
-  let { error } = validate(req.body);
+  let { error } = validateSignup(req.body);
 
   if (error) {
     const firstError = error.details[0].message;

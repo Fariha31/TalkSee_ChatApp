@@ -6,14 +6,21 @@
 
 /**Header Component*/
 .navbar {
-  background: rgb(231, 226, 221);
+  background: #8dadaf;
   z-index: 1;
   text-transform: capitalize;
 }
 .navbar .nav-link {
+  color: rgb(231, 226, 221) !important;
   font-size: 18px;
   font-weight: bold;
   text-transform: capitalize;
+}
+.btn-link {
+  color: rgb(231, 226, 221) !important;
+  text-transform: capitalize;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 /*Login+Signup Component*/

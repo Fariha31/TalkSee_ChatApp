@@ -2,6 +2,7 @@ const { Signup } = require("../models/SignUp");
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail');
 const config = require("config");
 exports.signupController = async (req, res) => {
   const { username, email, password } = req.body;
