@@ -8,8 +8,8 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  FormControlLabel,
-  Checkbox,
+  Card,
+  CardContent,
   Typography,
   IconButton,
   InputLabel
@@ -98,7 +98,7 @@ const LogIn = () => {
           console.log(err);
           setValues({
             ...values,
-            loading: "false",
+            loading: false,
             errorMessage: err.response.data.errorMessage,
           });
         });
@@ -136,6 +136,7 @@ const LogIn = () => {
       <Grid container>
         <Grid item xs={1} sm={3} md={4}></Grid>
         <Grid item xs={10} sm={6} md={4}>
+          
            <TextField
            className={classes.textField}
            style={{marginTop:"2rem"}}
@@ -156,7 +157,7 @@ const LogIn = () => {
              <EmailIcon style={{ color: grey[600] }}/>
             </InputAdornment>
           ),
-        }}
+         }}
           />
           
          <FormControl className={clsx(classes.margin, classes.textField)} fullWidth>
@@ -189,16 +190,24 @@ const LogIn = () => {
               </InputAdornment>
             }
           />
-        </FormControl>
+         </FormControl>
          
-         
+         <Grid container> 
+         <Grid item xs ={6} sm={7} md={8}>
+          
+         </Grid>
+       
+          <Grid item xs={6} sm={5} md={4}>
+             <Link to="/resetPasscode" style={{textDecoration:"none",marginLeft:"2rem"}}  >Forgot Password?</Link>
+          </Grid>
            
+            </Grid>
             <Button
              style={{ color: grey[50],
               backgroundColor:cyan[600],
               fontWeight:"bold", 
               borderRadius:"1rem" , 
-              marginTop: "0.8rem",
+              marginTop: "1.2rem",
               padding: "0.5rem",
               marginLeft:"1rem" }}
             className= "loginbtn"
@@ -210,8 +219,10 @@ const LogIn = () => {
           </Button>
            
           <hr style={{ marginLeft:"1rem"}}/>
-          <Link to="/signup"  >Forgot Password?</Link>
-        </Grid>
+         
+         </Grid>
+        
+         
         <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>
     </div>
@@ -219,11 +230,15 @@ const LogIn = () => {
   return (
     <div>
       {loading && <LinearBuffer />}
-      {LogInHeader()}
+     
+          {LogInHeader()}
+      {LogInForm()}
+      
+     
       {errorMessage && (
         <AlertBar type="error" message={errorMessage} autoClose={5000} />
       )}
-      {LogInForm()}
+       
     </div>
   );
 };

@@ -53,6 +53,7 @@ const Header = ({ history }) => {
                  <li className="nav-item">
                   <button
                     className="btn text-decoration-none btn-link   pl-0"
+                    style={{textDecoration:"none"}}
                     onClick={handleLogOut}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i> Logout

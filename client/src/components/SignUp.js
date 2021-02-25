@@ -48,10 +48,10 @@ const SignUp = () => {
       history.push("/dashboard");
   }, [history]);
   const [values, setValues] = useState({
-    username: "",
+    username: "Fariha",
     email: "",
-    password: "",
-    confirmPassword: "",
+    password: "1234567",
+    confirmPassword: "1234567",
     errorMessage: "",
     successMsg: "",
     showPassword: false,
@@ -128,7 +128,7 @@ const SignUp = () => {
           console.log(err);
           setValues({
             ...values,
-            loading: "false",
+            loading: false,
             errorMessage: err.response.data.errorMessage,
           });
         });
@@ -296,7 +296,7 @@ const SignUp = () => {
   );
   return (
     <div>
-      {loading && successMsg && <LinearBuffer />}
+      {loading && <LinearBuffer />}
       {errorMessage && (
         <AlertBar type="error" message={errorMessage} autoClose={6000} />
       )}
