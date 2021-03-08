@@ -6,7 +6,7 @@ const sgMail = require('@sendgrid/mail');
 const config = require("config");
 sgMail.setApiKey("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")
 exports.signupVerificationController = async (req, res) => {
-  const { firstname,lastname, email, password } = req.body;
+  const { firstname,lastname, email, password, gender } = req.body;
   try {
     const emailAlready = await Signup.findOne({ email });
     if (emailAlready) {
@@ -19,7 +19,8 @@ exports.signupVerificationController = async (req, res) => {
         firstname,
         lastname,
         email,
-        password
+        password,
+        gender
       },
       config.get("jwtPrivateKey"),
       {
@@ -28,7 +29,7 @@ exports.signupVerificationController = async (req, res) => {
     );
     const emailData = {
       from: "fa17-bcs-015@cuilahore.edu.pk",
-      to: email,
+      to:  email,
       subject: 'Account activation link',
       html: ` <head>
              <style>    
@@ -75,11 +76,12 @@ exports.signupVerificationController = async (req, res) => {
                     </div>
                </body>
                 `
-    };
+   };
    sgMail.send(emailData)
       .then(sent => {
+        console.log(`http://localhost:3000/user/activate/${token}`);
         res.status(200).json({
-      successMessage: "Check your gmail account to verify your account",
+      successMessage: `Email has been sent to ${email}`,
     });
       })
       .catch(err => {
@@ -108,13 +110,13 @@ exports.activationController = async (req, res) => {
           lastname:lastname
         });
       }  });
-     const { firstname,lastname, email, password } = jwt.decode(token);
+     const { firstname,lastname, email, password,gender } = jwt.decode(token);
   try{
     const emailAlready = await Signup.findOne({ email });
     if (emailAlready) {
       return res.status(400).json({
         errorMessage: "Email Already taken",
-       firstname:firstname,
+          firstname:firstname,
           lastname:lastname
       });
     }
@@ -122,6 +124,7 @@ exports.activationController = async (req, res) => {
     newUser.firstname = firstname;
     newUser.lastname=lastname;
     newUser.email = email;
+    newUser.gender=gender;
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(password, salt);
       
@@ -137,9 +140,7 @@ exports.activationController = async (req, res) => {
      firstname:firstname,
       lastname:lastname
     });
-  }
-   
-     } else {
+  }} else {
    return  res.status(400).json({
               errorMessage: 'Signup failed because no token identify',
              firstname:firstname,

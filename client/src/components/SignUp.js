@@ -10,13 +10,17 @@ import {
   Input,
   IconButton,
   Typography,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
 } from "@material-ui/core";
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link, useHistory } from "react-router-dom";
-import { grey, cyan, brown} from '@material-ui/core/colors';
+import { grey, cyan, brown,green} from '@material-ui/core/colors';
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import equals from "validator/lib/equals";
@@ -103,19 +107,24 @@ const SignUp = () => {
     event.preventDefault();
     if (
       isEmpty(firstname) ||
-       isEmpty(lastname) ||
+      isEmpty(lastname) ||
       isEmpty(email) ||
       isEmpty(password) ||
       isEmpty(confirmPassword)
     ) {
       setValues({ ...values, errorMessage: "All fields are required" });
-    } else if (!isEmail(email)) {
+    } 
+    else if (isEmpty(gender)){
+       setValues({ ...values, errorMessage: "Please Select gender" });
+       console.log(gender)
+    }
+    else if (!isEmail(email)) {
       setValues({ ...values, errorMessage: "Invalid Email" });
     } else if (!equals(password, confirmPassword)) {
       setValues({ ...values, errorMessage: "Password do not matched" });
     } else {
-      const { firstname,lastname, email, password } = values;
-      const data = { firstname,lastname,  email, password };
+      const { firstname,lastname, email, password ,gender} = values;
+      const data = { firstname,lastname,  email, password ,gender};
       setValues({ ...values, loading: true });
       signup(data)
         .then((response) => {
@@ -126,6 +135,7 @@ const SignUp = () => {
             email: "",
             password: "",
             confirmPassword: "",
+            gender:"",
             errorMessage: false,
             successMsg: response.data.successMessage,
             loading: false,
@@ -146,7 +156,7 @@ const SignUp = () => {
       <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
       <Grid item xs={10} sm={8} xm={2} md={4}>
          <Typography variant="headline" style={{marginBottom:"2rem", 
-         marginTop:"3rem",
+         marginTop:"1rem",
          textAlign:"center",
          fontSize:"5rem",
          color:brown[300],
@@ -155,10 +165,10 @@ const SignUp = () => {
         <hr/>
         <Grid container style={{textAlign:"center"}}>
           <Grid item xs={6} >
-            <Link className="active-header"  to="/login">Sign In</Link>      
+            <Link className="header"  to="/login">Sign In</Link>      
           </Grid>
           <Grid item xs={6}>
-            <Link className="header" to="/signup">Sign Up</Link>
+            <Link className="active-header" to="/signup">Sign Up</Link>
           </Grid>
 
         </Grid>   
@@ -198,7 +208,7 @@ const SignUp = () => {
           />
            <TextField
             className={classes.textfield}
-            id="filled-start-adornment"
+            id="filled-start-adornment1"
             value={values.lastname}
             label= {
               <div> 
@@ -302,13 +312,24 @@ const SignUp = () => {
             }
           />
         </FormControl>
-    
+    <FormControl component="fieldset" style={{marginTop:"0.3rem"}}>
+      <FormLabel component="legend">  
+            <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic", fontSize:"0.9rem",marginLeft:"0.4rem"  }}> Gender</Typography>
+             <Typography variant="headline" style={{color:"red",marginLeft:"0.4rem" }}>*</Typography>
+             </FormLabel>
+      <RadioGroup aria-label="gender" name="gender1" style={{display:'initial',marginLeft:"4rem"}} value={values.gender} onChange={handleChange('gender')}>
+        <FormControlLabel value="female" control={<Radio style={{color:cyan[900]}} />} label="Female" />
+        <FormControlLabel value="male" control={<Radio style={{color:cyan[900]}}/>} label="Male" />
+        <FormControlLabel value="other" control={<Radio style={{color:cyan[900]}} />} label="Other" />
+      </RadioGroup>
+    </FormControl>
          <Button
              style={{ color: grey[50],
               backgroundColor:cyan[600],
               fontWeight:"bold", 
               borderRadius:"1rem" , 
-              marginTop: "0.8rem",
+              marginTop: "0.2rem",
+               marginBottom:"0.6rem",
               padding: "0.5rem",
               marginLeft:"1rem" }}
             className= "loginbtn"

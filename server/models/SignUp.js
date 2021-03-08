@@ -16,6 +16,7 @@ const SignupSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    gender:String,
     resetPasswordLink: {
       data: String,
       default: ''
@@ -33,8 +34,8 @@ function validateSignup(data) {
       minDomainSegments: 2,
       tlds: { allow: ["com"] },
     }),
-
     password: Joi.string().min(7).max(20).required(),
+    gender:Joi.string().required(),
   });
   return schema.validate(data, { abortEarly: false });
 }
