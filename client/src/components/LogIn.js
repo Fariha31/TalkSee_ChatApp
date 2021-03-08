@@ -8,8 +8,6 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  Card,
-  CardContent,
   Typography,
   IconButton,
   InputLabel
@@ -193,12 +191,12 @@ const LogIn = () => {
          </FormControl>
          
          <Grid container> 
-         <Grid item xs ={6} sm={7} md={8}>
+         <Grid item xs ={6} sm={7} md={7}>
           
          </Grid>
        
-          <Grid item xs={6} sm={5} md={4}>
-             <Link to="/resetPasscode" style={{textDecoration:"none",marginLeft:"2rem"}}  >Forgot Password?</Link>
+          <Grid item xs={6} sm={5} md={5}>
+             <Link to="/forgotPassword" style={{textDecoration:"none",marginLeft:"2.5rem"}}  >Forgot Password?</Link>
           </Grid>
            
             </Grid>

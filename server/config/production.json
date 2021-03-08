@@ -1,4 +1,5 @@
 {
  "db": "mongodb+srv://Fariha_Liaqat:Fariha@talksee-cluster.rsxkw.mongodb.net/TalkSee?retryWrites=true&w=majority",
-  "jwtPrivateKey": "akaygoptdvbnpoyqraikhz1pnQp"
+  "jwtPrivateKey": "akaygoptdvbnpoyqraikhz1pnQp",
+  "jwtResetKey": "kdfks1ONzkdhkfQjbjfgihr1245"
 }

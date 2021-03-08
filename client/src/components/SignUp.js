@@ -26,6 +26,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { signup } from "../api/auth";
 import { isAuthenticated } from "../clientStorages.js/auth";
+ 
 
 const useStyles = makeStyles((theme) => ({
    
@@ -48,8 +49,10 @@ const SignUp = () => {
       history.push("/dashboard");
   }, [history]);
   const [values, setValues] = useState({
-    username: "Fariha",
-    email: "",
+    firstname: "Fariha",
+    lastname:"Liaqat",
+    email: "farihaliaqat31@gmail.com",
+    gender:"",
     password: "1234567",
     confirmPassword: "1234567",
     errorMessage: "",
@@ -59,8 +62,10 @@ const SignUp = () => {
     loading: false,
   });
   const {
-    username,
+    firstname,
+    lastname,
     email,
+    gender,
     password,
     confirmPassword,
     errorMessage,
@@ -97,7 +102,8 @@ const SignUp = () => {
   const Register = (event) => {
     event.preventDefault();
     if (
-      isEmpty(username) ||
+      isEmpty(firstname) ||
+       isEmpty(lastname) ||
       isEmpty(email) ||
       isEmpty(password) ||
       isEmpty(confirmPassword)
@@ -108,14 +114,15 @@ const SignUp = () => {
     } else if (!equals(password, confirmPassword)) {
       setValues({ ...values, errorMessage: "Password do not matched" });
     } else {
-      const { username, email, password } = values;
-      const data = { username, email, password };
+      const { firstname,lastname, email, password } = values;
+      const data = { firstname,lastname,  email, password };
       setValues({ ...values, loading: true });
       signup(data)
         .then((response) => {
           setValues({
             ...values,
-            username: "",
+            firstname: "",
+            lastname:"",
             email: "",
             password: "",
             confirmPassword: "",
@@ -134,7 +141,7 @@ const SignUp = () => {
         });
     }
   };
-  const SignUpHeader = () => (
+   const SignUpHeader = () => (
     <Grid container >
       <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
       <Grid item xs={10} sm={8} xm={2} md={4}>
@@ -148,10 +155,10 @@ const SignUp = () => {
         <hr/>
         <Grid container style={{textAlign:"center"}}>
           <Grid item xs={6} >
-            <Link className="header"  to="/login">Sign In</Link>      
+            <Link className="active-header"  to="/login">Sign In</Link>      
           </Grid>
           <Grid item xs={6}>
-            <Link className="active-header" to="/signup">Sign Up</Link>
+            <Link className="header" to="/signup">Sign Up</Link>
           </Grid>
 
         </Grid>   
@@ -170,14 +177,36 @@ const SignUp = () => {
             className={classes.textfield}
             id="filled-start-adornment"
              style={{marginTop:"2rem"}}
-            value={values.username}
+            value={values.firstname}
             label= {
               <div> 
-             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Username </Typography>
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Firstname </Typography>
              <Typography variant="headline" style={{color:"red"}}>*</Typography>
                   </div>
             }
-            name="username"
+            name="firstname"
+            
+            fullWidth
+            onChange={handleTextChange}
+             InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+             <AccountCircleIcon style={{ color: grey[600] }}/>
+            </InputAdornment>
+          ),
+        }}
+          />
+           <TextField
+            className={classes.textfield}
+            id="filled-start-adornment"
+            value={values.lastname}
+            label= {
+              <div> 
+             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic"  }}> Lastname </Typography>
+             <Typography variant="headline" style={{color:"red"}}>*</Typography>
+                  </div>
+            }
+            name="lastname"
             
             fullWidth
             onChange={handleTextChange}

@@ -5,28 +5,33 @@ import { grey,green, cyan,red, brown} from '@material-ui/core/colors';
 import {Button, Grid, Typography} from "@material-ui/core";
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import TalkSeeTitle from "./TalkSeeTitle";
 const Activate = ({ match }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstname: '',
+    lastname: '',
     token: '',
     errorMessage: "",
     successMsg: "",
   });
+   const { firstname,lastname, token, errorMessage, successMsg} = formData;
    
-  const { username, token, errorMessage, successMsg} = formData;
   useEffect(() => {
     let token = match.params.token;
-    let { username } = jwt.decode(token);
+    let { firstname } = jwt.decode(token);
+    let { lastname } = jwt.decode(token);
     if (token) {
-      setFormData({ ...formData, username,  token });
-    }
-    axios
+      setFormData({ ...formData, firstname,lastname,  token });
+       
+      axios
       .post("http://localhost:5000/api/auth/activation", {token})
       .then(response => {
         setFormData({
           ...formData,
           errorMessage: false,
           successMsg: response.data.successMessage,
+          firstname: response.data.firstname,
+          lastname: response.data.lastname,
         });
        
       })
@@ -34,38 +39,22 @@ const Activate = ({ match }) => {
         
       setFormData({
           ...formData,
+          successMsg: false,
          errorMessage: err.response.data.errorMessage,
+          firstname: err.response.data.firstname,
+          lastname: err.response.data.lastname,
         });
       });
-  }, [match.params]);
- 
-   
+    }}, [match.params]);
+     
   
-  const Header = () => (
-    <Grid container >
-      <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
-      <Grid item xs={10} sm={8} xm={2} md={4}>
-         <Typography variant="headline" style={{marginBottom:"2rem", 
-         marginTop:"3rem",
-         textAlign:"center",
-         fontSize:"5rem",
-         color:brown[300],
-         fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
-          component="h1">TalkSee</Typography>
-        <hr/>  
-      </Grid>
-      
-    <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
- 
-    </Grid>
-  );
   const ActivationSuccess=()=>(
 <div> 
   <Grid container > 
  <Grid item xs={1} sm={3} md={4}></Grid>
   <Grid item xs={1} sm={3} md={4}> 
   
-      <p><strong>Hi {username}</strong></p>
+      <p><strong>Hi {firstname +" "+lastname}</strong></p>
         <div>  <CheckCircleRoundedIcon 
               style = {{ color: green[600],paddingTop:"0.3rem" }}/>  
            <span style ={{fontSize:"1.3rem"}} > Your account has been successfully verified. Click below to create your profile</span></div>
@@ -97,7 +86,7 @@ const Activate = ({ match }) => {
  <Grid item xs={1} sm={3} md={4}></Grid>
   <Grid item xs={1} sm={3} md={4}> 
   
-      <p><i>Hi {username}</i></p>
+      <p><strong>Hi {firstname+" "+lastname}</strong></p>
         <div>  <CancelRoundedIcon 
               style = {{ color: red[600]  }}/>  
            <span style ={{fontSize:"1.3rem"}} > <strong>{errorMessage}</strong> </span></div>
@@ -112,7 +101,6 @@ const Activate = ({ match }) => {
             variant="contained"
              className= "loginbtn"
             onClick={event =>  window.location.href='/signup'}
-            
              
           >
                Try  Again   
@@ -126,7 +114,7 @@ const Activate = ({ match }) => {
   );
   return (
   <div>
-       {Header()}
+        <TalkSeeTitle/>
        {errorMessage && ( ActivationFailure())}
        {successMsg && (ActivationSuccess())}
   </div>)

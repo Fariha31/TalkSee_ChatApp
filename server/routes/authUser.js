@@ -3,12 +3,14 @@ const router = express.Router();
 const {
   signupValidation,
   loginValidation,
+  resetPasswordValidation
 
 } = require("../middleware/validateUser");
-const { activationController, loginController,signupVerificationController } = require("../controller/authUser");
-
+const { activationController, loginController,signupVerificationController,resetPasswordController, forgotPasswordController } = require("../controller/authUser");
 router.post("/signup", signupValidation, signupVerificationController);
 router.post("/activation",activationController)
 router.post("/login", loginValidation, loginController);
-
+router.put("/forgotPassword",forgotPasswordController);
+router.put("/resetPassword",resetPasswordValidation,resetPasswordController);
+ 
 module.exports = router;
