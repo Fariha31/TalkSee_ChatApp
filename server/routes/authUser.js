@@ -10,7 +10,7 @@ const { activationController, loginController,signupVerificationController,reset
 router.post("/signup", signupValidation, signupVerificationController);
 router.post("/activation",activationController)
 router.post("/login", loginValidation, loginController);
-router.put("/forgotPassword",forgotPasswordController);
-router.put("/resetPassword",resetPasswordValidation,resetPasswordController);
+router.put("/forgot-password",forgotPasswordController);
+router.put("/reset-password",resetPasswordValidation,resetPasswordController);
  
 module.exports = router;

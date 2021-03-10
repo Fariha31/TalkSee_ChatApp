@@ -2,9 +2,10 @@ const { Signup } = require("../models/SignUp");
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 const config = require("config");
-sgMail.setApiKey("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")
+require('dotenv').config();
+ 
 exports.signupVerificationController = async (req, res) => {
   const { firstname,lastname, email, password, gender } = req.body;
   try {
@@ -23,12 +24,21 @@ exports.signupVerificationController = async (req, res) => {
         gender
       },
       config.get("jwtPrivateKey"),
-      {
-        expiresIn: '8m'
-      }
+      { expiresIn: '10m' }
     );
+
+    let transporter = nodemailer.createTransport({
+       service: 'gmail',
+      auth:{
+        user:process.env.EMAIL,
+        pass:process.env.PASSWORD
+      },
+       tls: {
+          rejectUnauthorized: false
+      }
+    })
     const emailData = {
-      from: "fa17-bcs-015@cuilahore.edu.pk",
+      from: process.env.EMAIL,
       to:  email,
       subject: 'Account activation link',
       html: ` <head>
@@ -77,22 +87,12 @@ exports.signupVerificationController = async (req, res) => {
                </body>
                 `
    };
-   sgMail.send(emailData)
-      .then(sent => {
-        console.log(`http://localhost:3000/user/activate/${token}`);
-        res.status(200).json({
-      successMessage: `Email has been sent to ${email}`,
-    });
-      })
-      .catch(err => {
-       res.status(500).json({
-      errorMessage: "Sendgrid Error",
-    });
-     
-  }
-  );
-    
-     
+       transporter.sendMail(emailData).then(sent => {
+               res.status(200).json({
+               successMessage: `Email has been sent to ${email}`});})
+          .catch(err => {
+               res.status(500).json({
+               errorMessage: "Nodemialer Error in signup" });});
   } catch (err) {
     res.status(500).json({
       errorMessage: "Server Error",
@@ -135,18 +135,17 @@ exports.activationController = async (req, res) => {
       lastname:lastname
     });
   }catch (err) {
-    res.status(400).json({
-      errorMessage: "Failed to register your account",
-     firstname:firstname,
-      lastname:lastname
+        return res.status(400).json({
+         errorMessage: "Failed to register your account",
+         firstname:firstname,
+         lastname:lastname
     });
   }} else {
-   return  res.status(400).json({
+         return  res.status(400).json({
               errorMessage: 'Signup failed because no token identify',
-             firstname:firstname,
-             lastname:lastname
-            });
-  }
+               firstname:firstname,
+               lastname:lastname});
+            }
 
 }
 exports.loginController = async (req, res) => {
@@ -165,12 +164,10 @@ exports.loginController = async (req, res) => {
       });
     }
     const payload = {
-      user: {
-        _id: user._id,
-      },
-    };
+      user: { _id: user._id, },
+     };
     jwt.sign(payload, config.get("jwtPrivateKey"), (err, token) => {
-      if (err) console.log("JWT error");
+      if (err) console.log("JWT sign error in Login");
       const { _id, firstname,lastname, email, role } = user;
       res.json({
         token,
@@ -178,7 +175,7 @@ exports.loginController = async (req, res) => {
       });
     });
    } catch (err) {
-    res.status(500).json({
+     return res.status(500).json({
       errorMessage: "Server Error in Login Controller",
     });
   }
@@ -200,10 +197,20 @@ exports.forgotPasswordController = async (req, res) => {
       },
     };
     const token = jwt.sign(
-      payload,config.get("jwtResetKey"),{expiresIn: '18m'}
+      payload,config.get("jwtResetKey"),{expiresIn: '10m'}
     );
+     let transporter = nodemailer.createTransport({
+       service: 'gmail',
+      auth:{
+        user:process.env.EMAIL,
+        pass:process.env.PASSWORD
+      },
+       tls: {
+          rejectUnauthorized: false
+      }
+    })
       const emailData = {
-      from: "fa17-bcs-015@cuilahore.edu.pk",
+      from: process.env.EMAIL,
       to: email,
       subject: 'Password Reset link',
       html: ` <head>
@@ -230,7 +237,7 @@ exports.forgotPasswordController = async (req, res) => {
                     <div class="card">
                     <h1>TalkSee</h1>
                     <h2>Click below link to reset your password</h2> 
-                    <p>http://localhost:3000/reset/password/${token}</p>
+                    <p>http://localhost:3000/reset-password/${token}</p>
                     <hr />
                     </div>
                </body>
@@ -247,8 +254,7 @@ exports.forgotPasswordController = async (req, res) => {
                   'Database connection error on user password forgot request'
               });
             } else {
-              sgMail
-                .send(emailData)
+               transporter.sendMail(emailData)
                 .then(sent => {
                   return res.json({
                     successMessage: `Email has been sent to ${email}`
@@ -266,8 +272,7 @@ exports.forgotPasswordController = async (req, res) => {
   }
 }
   catch (err) {
-    console.log(err)
-    res.status(500).json({
+    return res.status(500).json({
       errorMessage: "Server Error in FP Controller",
     });
   }
@@ -282,7 +287,7 @@ try {
         return res.status(401).json({
           errorMessage: 'Link expired, Try again',
         });
-      }  });
+      } });
     
           let user = await Signup.findOne({resetPasswordLink});
            if(user){

@@ -1,19 +1,19 @@
 import React from "react";
 import {Grid,Typography} from "@material-ui/core";
  import {brown} from '@material-ui/core/colors';
-const TalkSeeTitle = () => {
+const PageTitle = ({name}) => {
   return <div>
      <Grid container >
       <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
       <Grid item xs={10} sm={8} xm={2} md={4}>
          <Typography variant="headline" 
-         style={{marginBottom:"2rem", 
-         marginTop:"3rem",
+         style={{ 
+         marginTop:"2rem",
          textAlign:"center",
          fontSize:"5rem",
          color:brown[300],
          fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
-          component="h1">TalkSee</Typography>
+          component="h1">{name}</Typography>
         <hr/>  
       </Grid>
       
@@ -23,4 +23,4 @@ const TalkSeeTitle = () => {
     </div>;
 };
 
-export default TalkSeeTitle;
+export default PageTitle;

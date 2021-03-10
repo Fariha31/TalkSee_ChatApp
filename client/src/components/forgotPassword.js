@@ -1,14 +1,14 @@
 import React,{useState} from "react";
-import axios from 'axios';
-import {Grid,Button, Typography, InputAdornment,TextField} from "@material-ui/core";
-import { grey, cyan, brown} from '@material-ui/core/colors';
+import accountService from "../services/accountService";
+import {Grid,Button, Typography, InputAdornment,TextField,Paper} from "@material-ui/core";
+import { grey, cyan,indigo} from '@material-ui/core/colors';
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import LinearBuffer from "../Alerts/ProgressBar";
 import AlertBar from "../Alerts/AlertBar";
 import EmailIcon from '@material-ui/icons/Email';
-import TalkSeeTitle from "./TalkSeeTitle";
-
+import PageTitle from "./pageTitle";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
  
 const ForgotPassword = () => {
       
@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       successMsg: "",
     });
   };
-  const VerifyEmail = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
     if (isEmpty(email)   ) {
       setValues({ ...values, errorMessage: "Field is required" });
@@ -36,15 +36,14 @@ const ForgotPassword = () => {
       setValues({ ...values, errorMessage: "Invalid Email  syntax" });
     } else {
       const { email} = values;
-      const data = {  email};
       setValues({ ...values, loading: true });
-        axios.put("http://localhost:5000/api/auth/forgotPassword",data)
+        accountService.forgotPassword({email})
         .then((response) => {
           setValues({
             ...values,
             email: "",
             errorMessage: false,
-            successMsg: response.data.successMessage,
+            successMsg: response.successMessage,
             loading: false,
           });
         })
@@ -62,11 +61,19 @@ const ForgotPassword = () => {
  
 const ResetPageForm = () =>(
 <div>
-    <Grid container>
+    <Grid container >
           <Grid item xs={1} sm={3} md={4}></Grid>
-          <Grid item xs={10} sm ={6} md={4}>
+          <Grid item xs={10} sm ={6} md={4} >
+        <Paper style={{padding: '30px 50px'}} >
+          <Button  
+            className= "loginbtn"
+            href="/login"
+            color="primary"
+           style={{marginBottom:"2rem" ,paddingLeft:"0rem",color:indigo[800]  }}
+          >
+            <ArrowBackIcon style={{fontWeight:"bold",marginRight:"0.3rem"}}/> Go Back
+          </Button>
               <TextField
-            style={{marginTop:"2rem"}}
             label= {
               <div> 
              <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic" }}> Email Address </Typography>
@@ -74,7 +81,7 @@ const ResetPageForm = () =>(
                   </div>
             }
             id="filled-start-adornment1"
-            
+             variant="outlined"
             name="email"
             value={values.email}
             fullWidth
@@ -87,21 +94,22 @@ const ResetPageForm = () =>(
           ),
         }}
           />
-          <Button
+              <Button
              style={{ color: grey[50],
               backgroundColor:cyan[600],
               fontWeight:"bold", 
-              borderRadius:"1rem" , 
+              borderRadius:"12rem" , 
               marginTop: "1.5rem",
               padding: "0.5rem",
                }}
             className= "loginbtn"
             variant="contained"
-            fullWidth
-            onClick={VerifyEmail}
+             fullWidth
+            onClick={onSubmit}
           >
-            Verify Email Address
+           Submit  
           </Button>
+                </Paper>
           </Grid>
           <Grid item xs={1} sm={3} md={4}></Grid>
     </Grid>
@@ -110,12 +118,12 @@ const ResetPageForm = () =>(
 return (<div>
     
     {loading && <LinearBuffer />}
-     <TalkSeeTitle/>
+     <PageTitle name= {"Forgot Password"}/>
       {errorMessage && (
-        <AlertBar type="error" message={errorMessage} autoClose={5000} />
+        <AlertBar type="error" message={errorMessage} autoClose={4000} />
       )}
       {successMsg && (
-        <AlertBar type="success" message={successMsg} autoClose={5000} />
+        <AlertBar type="success" message={successMsg} autoClose={4000} />
       )}
       {ResetPageForm()}
     </div>

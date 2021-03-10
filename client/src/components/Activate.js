@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import accountService from "../services/accountService";
 import jwt from 'jsonwebtoken';
-import { grey,green, cyan,red, brown} from '@material-ui/core/colors';
-import {Button, Grid, Typography} from "@material-ui/core";
+import { grey,green, cyan,red} from '@material-ui/core/colors';
+import {Button, Grid} from "@material-ui/core";
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import TalkSeeTitle from "./TalkSeeTitle";
+import PageTitle from "./pageTitle";
 const Activate = ({ match }) => {
   const [formData, setFormData] = useState({
     firstname: '',
@@ -21,22 +21,18 @@ const Activate = ({ match }) => {
     let { firstname } = jwt.decode(token);
     let { lastname } = jwt.decode(token);
     if (token) {
-      setFormData({ ...formData, firstname,lastname,  token });
-       
-      axios
-      .post("http://localhost:5000/api/auth/activation", {token})
+      setFormData({ ...formData, firstname,lastname,  token });  
+      accountService.accountActivation({token})
       .then(response => {
         setFormData({
           ...formData,
           errorMessage: false,
-          successMsg: response.data.successMessage,
-          firstname: response.data.firstname,
-          lastname: response.data.lastname,
+          successMsg: response.successMessage,
+          firstname: response.firstname,
+          lastname: response.lastname,
         });
-       
       })
       .catch(err => {
-        
       setFormData({
           ...formData,
           successMsg: false,
@@ -114,7 +110,7 @@ const Activate = ({ match }) => {
   );
   return (
   <div>
-        <TalkSeeTitle/>
+        <PageTitle name= {"Activation"}/>
        {errorMessage && ( ActivationFailure())}
        {successMsg && (ActivationSuccess())}
   </div>)

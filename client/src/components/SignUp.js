@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  Paper,
   RadioGroup,
 } from "@material-ui/core";
 import EmailIcon from '@material-ui/icons/Email';
@@ -20,7 +21,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link, useHistory } from "react-router-dom";
-import { grey, cyan, brown,green} from '@material-ui/core/colors';
+import { grey, cyan, brown} from '@material-ui/core/colors';
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import equals from "validator/lib/equals";
@@ -29,17 +30,17 @@ import AlertBar from "../Alerts/AlertBar";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { signup } from "../api/auth";
+import PageTitle from "./pageTitle";
 import { isAuthenticated } from "../clientStorages.js/auth";
  
 
 const useStyles = makeStyles((theme) => ({
    
   textfield: {
-     margin: theme.spacing(1),
+     marginTop: theme.spacing(2.5),
   },
   margin:{
-    margin: theme.spacing(1),
-    marginLeft:"0.5rem",
+         marginTop: theme.spacing(2.5),
   }
    
 }));
@@ -53,12 +54,12 @@ const SignUp = () => {
       history.push("/dashboard");
   }, [history]);
   const [values, setValues] = useState({
-    firstname: "Fariha",
-    lastname:"Liaqat",
-    email: "farihaliaqat31@gmail.com",
+    firstname: "",
+    lastname:"",
+    email: "",
     gender:"",
-    password: "1234567",
-    confirmPassword: "1234567",
+    password: "",
+    confirmPassword: "",
     errorMessage: "",
     successMsg: "",
     showPassword: false,
@@ -110,19 +111,14 @@ const SignUp = () => {
       isEmpty(lastname) ||
       isEmpty(email) ||
       isEmpty(password) ||
-      isEmpty(confirmPassword)
-    ) {
+      isEmpty(confirmPassword)||isEmpty(gender)) 
+      {
       setValues({ ...values, errorMessage: "All fields are required" });
-    } 
-    else if (isEmpty(gender)){
-       setValues({ ...values, errorMessage: "Please Select gender" });
-       console.log(gender)
-    }
-    else if (!isEmail(email)) {
+      } else if (!isEmail(email)) {
       setValues({ ...values, errorMessage: "Invalid Email" });
-    } else if (!equals(password, confirmPassword)) {
+      } else if (!equals(password, confirmPassword)) {
       setValues({ ...values, errorMessage: "Password do not matched" });
-    } else {
+      } else {
       const { firstname,lastname, email, password ,gender} = values;
       const data = { firstname,lastname,  email, password ,gender};
       setValues({ ...values, loading: true });
@@ -151,19 +147,14 @@ const SignUp = () => {
         });
     }
   };
-   const SignUpHeader = () => (
-    <Grid container >
-      <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
-      <Grid item xs={10} sm={8} xm={2} md={4}>
-         <Typography variant="headline" style={{marginBottom:"2rem", 
-         marginTop:"1rem",
-         textAlign:"center",
-         fontSize:"5rem",
-         color:brown[300],
-         fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
-          component="h1">TalkSee</Typography>
-        <hr/>
-        <Grid container style={{textAlign:"center"}}>
+    
+  const SignUpForm = () => (
+    <div className="signup-container">
+      <Grid container>
+        <Grid item xs={1} sm={3} md={4}></Grid>
+        <Grid item xs={10} sm ={6} md={4}>
+          <Paper style={{padding: '30px 40px'}} >
+              <Grid container style={{textAlign:"center"}}>
           <Grid item xs={6} >
             <Link className="header"  to="/login">Sign In</Link>      
           </Grid>
@@ -171,22 +162,11 @@ const SignUp = () => {
             <Link className="active-header" to="/signup">Sign Up</Link>
           </Grid>
 
-        </Grid>   
-      </Grid>
-      
-    <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
- 
-    </Grid>
-  );
-  const SignUpForm = () => (
-    <div className="signup-container">
-      <Grid container>
-        <Grid item xs={1} sm={3} md={4}></Grid>
-        <Grid item xs={10} sm ={6} md={4}>
+        </Grid>
           <TextField
             className={classes.textfield}
             id="filled-start-adornment"
-             style={{marginTop:"2rem"}}
+             
             value={values.firstname}
             label= {
               <div> 
@@ -312,7 +292,7 @@ const SignUp = () => {
             }
           />
         </FormControl>
-    <FormControl component="fieldset" style={{marginTop:"0.3rem"}}>
+    <FormControl component="fieldset" className={classes.margin}>
       <FormLabel component="legend">  
             <Typography variant="headline" style={{fontWeight:"bold",fontStyle:"italic", fontSize:"0.9rem",marginLeft:"0.4rem"  }}> Gender</Typography>
              <Typography variant="headline" style={{color:"red",marginLeft:"0.4rem" }}>*</Typography>
@@ -328,17 +308,16 @@ const SignUp = () => {
               backgroundColor:cyan[600],
               fontWeight:"bold", 
               borderRadius:"1rem" , 
-              marginTop: "0.2rem",
-               marginBottom:"0.6rem",
-              padding: "0.5rem",
-              marginLeft:"1rem" }}
+             
+              padding: "0.5rem",}}
             className= "loginbtn"
             variant="contained"
             fullWidth
             onClick={Register}
           >
-            Sign Up
+            Next
           </Button>
+          </Paper>
         </Grid>
         <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>
@@ -348,12 +327,12 @@ const SignUp = () => {
     <div>
       {loading && <LinearBuffer />}
       {errorMessage && (
-        <AlertBar type="error" message={errorMessage} autoClose={6000} />
+        <AlertBar type="error" message={errorMessage} autoClose={4000} />
       )}
       {successMsg && (
-        <AlertBar type="success" message={successMsg} autoClose={6000} />
+        <AlertBar type="success" message={successMsg} autoClose={4000} />
       )}
-      {SignUpHeader()}
+       <PageTitle name= {"TalkSee"}/>
       {SignUpForm()}
     </div>
   );

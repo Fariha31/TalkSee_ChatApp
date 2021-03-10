@@ -9,6 +9,7 @@ import {
   Input,
   InputAdornment,
   Typography,
+  Paper,
   IconButton,
   InputLabel
 } from "@material-ui/core";
@@ -22,15 +23,16 @@ import isEmpty from "validator/lib/isEmpty";
 import AlertBar from "../Alerts/AlertBar";
 import LinearBuffer from "../Alerts/ProgressBar";
 import { login } from "../api/auth";
+import PageTitle from "./pageTitle";
 import { authentication, isAuthenticated } from "../clientStorages.js/auth";
 
 const useStyles = makeStyles((theme) => ({
    textField: {
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   margin:{
-    margin: theme.spacing(2),
-    marginLeft:"0.9rem",
+    marginBottom: theme.spacing(2),
+    
   }
 }));
 const LogIn = () => {
@@ -93,28 +95,24 @@ const LogIn = () => {
           setValues({ ...values, loading: false });
         })
         .catch((err) => {
-          console.log(err);
           setValues({
             ...values,
+            email:"",
+            password:"",
             loading: false,
             errorMessage: err.response.data.errorMessage,
           });
         });
     }
   };
-  const LogInHeader = () => (
-    <Grid container >
-      <Grid item xs={1} sm={2} xm={5} md={4}></Grid>
-      <Grid item xs={10} sm={8} xm={2} md={4}>
-         <Typography variant="headline" style={{marginBottom:"2rem", 
-         marginTop:"3rem",
-         textAlign:"center",
-         fontSize:"5rem",
-         color:brown[300],
-         fontFamily:"Brush Script MT, Brush Script Std, cursive"}}
-          component="h1">TalkSee</Typography>
-        <hr/>
-        <Grid container style={{textAlign:"center"}}>
+  
+  const LogInForm = () => (
+    <div className="Login-container">
+      <Grid container>
+        <Grid item xs={1} sm={3} md={4}></Grid>
+        <Grid item xs={10} sm={6} md={4}>
+           <Paper style={{padding: '30px 50px'}} > 
+            <Grid container style={{textAlign:"center"}}>
           <Grid item xs={6} >
             <Link className="active-header"  to="/login">Sign In</Link>      
           </Grid>
@@ -122,19 +120,7 @@ const LogIn = () => {
             <Link className="header" to="/signup">Sign Up</Link>
           </Grid>
 
-        </Grid>   
-      </Grid>
-      
-    <Grid item  xs={1} sm={2} xm={5} md={4}></Grid>
- 
-    </Grid>
-  );
-  const LogInForm = () => (
-    <div className="Login-container">
-      <Grid container>
-        <Grid item xs={1} sm={3} md={4}></Grid>
-        <Grid item xs={10} sm={6} md={4}>
-          
+        </Grid>
            <TextField
            className={classes.textField}
            style={{marginTop:"2rem"}}
@@ -189,38 +175,24 @@ const LogIn = () => {
             }
           />
          </FormControl>
-         
-         <Grid container> 
-         <Grid item xs ={6} sm={7} md={7}>
-          
-         </Grid>
-       
-          <Grid item xs={6} sm={5} md={5}>
-             <Link to="/forgotPassword" style={{textDecoration:"none",marginLeft:"2.5rem"}}  >Forgot Password?</Link>
-          </Grid>
-           
-            </Grid>
             <Button
              style={{ color: grey[50],
               backgroundColor:cyan[600],
               fontWeight:"bold", 
               borderRadius:"1rem" , 
-              marginTop: "1.2rem",
+              marginBottom: "1.2rem",
               padding: "0.5rem",
-              marginLeft:"1rem" }}
+               }}
             className= "loginbtn"
             variant="contained"
             fullWidth
             onClick={Register}
           >
-            Sign In
+            LOGIN
           </Button>
-           
-          <hr style={{ marginLeft:"1rem"}}/>
-         
+           <Link to="/forgot-password" style={{textDecoration:"none",marginLeft:"1rem auto"}}  >Forgot Password?</Link>
+   </Paper>
          </Grid>
-        
-         
         <Grid item xs={1} sm={3} md={4}></Grid>
       </Grid>
     </div>
@@ -229,12 +201,12 @@ const LogIn = () => {
     <div>
       {loading && <LinearBuffer />}
      
-          {LogInHeader()}
+             <PageTitle name= {"TalkSee"}/>
       {LogInForm()}
       
      
       {errorMessage && (
-        <AlertBar type="error" message={errorMessage} autoClose={5000} />
+        <AlertBar type="error" message={errorMessage} autoClose={4000} />
       )}
        
     </div>
