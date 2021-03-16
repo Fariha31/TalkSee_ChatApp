@@ -1,4 +1,4 @@
-const { validateSignup, validateLogin, validatePassword} = require("../models/SignUp");
+const { validateSignup, validateLogin, validatePassword, validateProfile} = require("../models/SignUp");
 function validateSignupUser(req, res, next) {
   let { error } = validateSignup(req.body);
 
@@ -32,6 +32,18 @@ function validateResetPassword(req, res, next) {
   }
   next();
 }
+function validateProfileSetup(req, res, next) {
+  let { error } = validateProfile(req.body);
+
+  if (error) {
+    const firstError = error.details[0].message;
+    return res.status(400).json({
+      errorMessage: firstError,
+    });
+  }
+  next();
+}
 module.exports.signupValidation = validateSignupUser;
 module.exports.loginValidation = validateLoginUser;
 module.exports.resetPasswordValidation=validateResetPassword;
+module.exports.ProfileSetupValidation=validateProfileSetup;

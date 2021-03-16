@@ -12,11 +12,13 @@ const SignupSchema = mongoose.Schema(
     lowercase:true,
 },
     password: String,
+    gender:String,
+    profileImg: String,
+    langPreference : String,
     role: {
       type: Number,
       default: 0,
     },
-    gender:String,
     resetPasswordLink: {
       data: String,
       default: ''
@@ -53,10 +55,20 @@ function validateLogin(data) {
 function validatePassword(data) {
   const schema = Joi.object({
      newPassword: Joi.string().min(7).max(20).required()
-  }).options({ allowUnknown: true });;
+  }).options({ allowUnknown: true });
+  return schema.validate(data, { abortEarly: false });
+}
+
+function validateProfile(data) {
+  const schema = Joi.object({
+     profileImg: Joi.string().required().messages({'any.required': `"Profile Picture" is required`}),
+     langPreference:Joi.string().required().messages({'any.required': `"Langugae" is required`})
+     
+  }).options({ allowUnknown: true }); 
   return schema.validate(data, { abortEarly: false });
 }
 module.exports.Signup = Signup;
 module.exports.validateSignup = validateSignup;
 module.exports.validateLogin = validateLogin;
 module.exports.validatePassword=validatePassword;
+module.exports.validateProfile =validateProfile

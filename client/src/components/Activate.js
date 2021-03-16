@@ -7,6 +7,7 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import PageTitle from "./pageTitle";
 const Activate = ({ match }) => {
+ let token1 = match.params.token;
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -64,7 +65,7 @@ const Activate = ({ match }) => {
               padding: "0.5rem" }}
               variant="contained"
               className= "loginbtn"
-              onClick={event =>  window.location.href='/login'}
+              onClick={event =>  window.location.href='/profile-setup/'+token1}
              
           >
             Create Profile
@@ -96,7 +97,7 @@ const Activate = ({ match }) => {
               padding: "0.5rem" }}
             variant="contained"
              className= "loginbtn"
-            onClick={event =>  window.location.href='/signup'}
+            onClick={event =>  window.location.href='/profile-setup/'+token1}
              
           >
                Try  Again   

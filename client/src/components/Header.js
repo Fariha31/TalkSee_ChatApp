@@ -1,8 +1,6 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 import { Link, withRouter, useHistory } from "react-router-dom";
 import { isAuthenticated, logout } from "../clientStorages.js/auth";
- 
-
 const Header = ({ history }) => {
   history = useHistory();
 

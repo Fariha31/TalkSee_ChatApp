@@ -4,12 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-
+env
 # testing
 /coverage
 #database
 # production
 /build
+__pycache__
 
 # misc
 .DS_Store

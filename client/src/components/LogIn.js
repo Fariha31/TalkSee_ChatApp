@@ -13,7 +13,7 @@ import {
   IconButton,
   InputLabel
 } from "@material-ui/core";
-import { grey, cyan, brown} from '@material-ui/core/colors';
+import { grey, cyan} from '@material-ui/core/colors';
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Visibility, VisibilityOff } from "@material-ui/icons";

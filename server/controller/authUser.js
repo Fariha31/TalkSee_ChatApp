@@ -115,7 +115,7 @@ exports.activationController = async (req, res) => {
     const emailAlready = await Signup.findOne({ email });
     if (emailAlready) {
       return res.status(400).json({
-        errorMessage: "Email Already taken",
+        successMessage: "Your email has been registered already",
           firstname:firstname,
           lastname:lastname
       });
@@ -154,7 +154,7 @@ exports.loginController = async (req, res) => {
     const user = await Signup.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        errorMessage: "User not registered",
+        errorMessage: "Account not registered",
       });
     }
     const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -285,7 +285,7 @@ try {
       jwt.verify(resetPasswordLink, config.get("jwtResetKey"), (err) => {
       if (err) {
         return res.status(401).json({
-          errorMessage: 'Link expired, Try again',
+          errorMessage: 'Reset Password Link expired, Try again',
         });
       } });
     
@@ -313,3 +313,30 @@ try {
     });
   }
 };
+exports.profileSetupController = async (req, res) => {
+  const {profileImg, langPreference, token}= req.body;
+  try{
+   const{email} = jwt.decode(token);
+   console.log(langPreference);
+    let user = await Signup.findOne({email});
+    if(user){
+    user.profileImg=profileImg;
+    user.langPreference=langPreference;
+     await user.save();
+               return res.status(200).json({
+            successMessage: "Profile has been created",
+    });
+  }
+  else{
+                return  res.status(500).json({
+                errorMessage: "profile not set",
+           });
+           }
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).json({
+      errorMessage: "Error in Profile Controller",
+    });
+  }
+}
