@@ -13,6 +13,6 @@ router.post("/activation",activationController)
 router.post("/login", loginValidation, loginController);
 router.put("/forgot-password",forgotPasswordController);
 router.put("/reset-password",resetPasswordValidation,resetPasswordController);
-router.post("/profile-setup" ,profileSetupController)
+router.post("/profile-setup" ,profileSetupValidation,profileSetupController)
  
 module.exports = router;

@@ -46,4 +46,4 @@ function validateProfileSetup(req, res, next) {
 module.exports.signupValidation = validateSignupUser;
 module.exports.loginValidation = validateLoginUser;
 module.exports.resetPasswordValidation=validateResetPassword;
-module.exports.ProfileSetupValidation=validateProfileSetup;
+module.exports.profileSetupValidation=validateProfileSetup;
