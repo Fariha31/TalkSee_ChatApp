@@ -24,7 +24,7 @@ import AlertBar from "../Alerts/AlertBar";
 import LinearBuffer from "../Alerts/ProgressBar";
 import { login } from "../api/auth";
 import PageTitle from "./pageTitle";
-import { authentication, isAuthenticated } from "../clientStorages.js/auth";
+import { authentication, isAuthenticated } from "../clientStorages/auth";
 
 const useStyles = makeStyles((theme) => ({
    textField: {

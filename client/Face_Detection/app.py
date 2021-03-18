@@ -8,7 +8,7 @@ CORS(app)
 
 
 @app.route("/", methods=['POST'])
-def picture():
+def face_detection():
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     file = request.files['file']
     npimg = np.fromfile(file, np.uint8)
@@ -24,7 +24,7 @@ def picture():
         }), 200
     else:
         return jsonify({
-            "errorMessage": "More than 1 face. Profile image must contain single human face",
+            "errorMessage": "More than 1 face are not allowed. Profile image must contain single human face",
         }), 403
 
     # for (x, y, w, h) in faces:
