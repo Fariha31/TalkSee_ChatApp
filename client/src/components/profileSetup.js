@@ -67,7 +67,7 @@ const resizeFile = (file) => new Promise(resolve => {
            const imageFile = e.target.files[0];
            const data = new FormData();
            data.append("file", imageFile);
-           axios.post("http://127.0.0.1:80/",data)
+           axios.post("http://127.0.0.1:5000/",data)
          .then(async (response) => {
            setValues({ ...values , successMsg:response.data.successMessage})
             const compressedImage = await resizeFile(imageFile);
