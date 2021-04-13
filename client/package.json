@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-image-file-resizer": "^0.4.2",
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  }, 
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

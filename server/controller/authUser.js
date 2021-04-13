@@ -1,4 +1,4 @@
-const { Signup } = require("../models/SignUp");
+const { User } = require("../models/User");
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
@@ -9,7 +9,7 @@ require('dotenv').config();
 exports.signupVerificationController = async (req, res) => {
   const { firstname,lastname, email, password, gender } = req.body;
   try {
-    const emailAlready = await Signup.findOne({ email });
+    const emailAlready = await User.findOne({ email });
     if (emailAlready) {
       return res.status(400).json({
         errorMessage: "Email Already exists",
@@ -112,7 +112,7 @@ exports.activationController = async (req, res) => {
       }  });
      const { firstname,lastname, email, password,gender } = jwt.decode(token);
   try{
-    const emailAlready = await Signup.findOne({ email });
+    const emailAlready = await User.findOne({ email });
     if (emailAlready) {
       return res.status(400).json({
         successMessage: "Your email has been registered already",
@@ -120,7 +120,7 @@ exports.activationController = async (req, res) => {
           lastname:lastname
       });
     }
-     const newUser = new Signup();
+     const newUser = new User();
     newUser.firstname = firstname;
     newUser.lastname=lastname;
     newUser.email = email;
@@ -151,7 +151,7 @@ exports.activationController = async (req, res) => {
 exports.loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await Signup.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
         errorMessage: "Account not registered",
@@ -168,10 +168,10 @@ exports.loginController = async (req, res) => {
      };
     jwt.sign(payload, config.get("jwtPrivateKey"), (err, token) => {
       if (err) console.log("JWT sign error in Login");
-      const { _id, firstname,lastname, email, role } = user;
-      res.json({
+      const { _id, firstname,lastname, email, role,gender, profileImg,langPreference, friends, sentRequests,friendRequests  } = user;
+      return  res.json({
         token,
-        user: { _id, firstname,lastname, email, role },
+        user: { _id, firstname,lastname, email, role ,gender, profileImg,langPreference, friends, sentRequests,friendRequests  },
       });
     });
    } catch (err) {
@@ -184,7 +184,7 @@ exports.loginController = async (req, res) => {
 exports.forgotPasswordController = async (req, res) => {
  const { email } = req.body;
   try{
-     const user = await Signup.findOne({ email });
+     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
         errorMessage: "User not found. Please Signup",
@@ -289,7 +289,7 @@ try {
         });
       } });
     
-          let user = await Signup.findOne({resetPasswordLink});
+          let user = await User.findOne({resetPasswordLink});
            if(user){
               const salt = await bcrypt.genSalt(10);
               user.password = await bcrypt.hash(newPassword, salt);
@@ -318,7 +318,7 @@ exports.profileSetupController = async (req, res) => {
   try{
    const{email} = jwt.decode(token);
    console.log(langPreference);
-    let user = await Signup.findOne({email});
+    let user = await User.findOne({email});
     if(user){
     user.profileImg=profileImg;
     user.langPreference=langPreference;

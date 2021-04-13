@@ -21,7 +21,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Link, useHistory } from "react-router-dom";
-import { grey, cyan, brown} from '@material-ui/core/colors';
+import { grey, cyan} from '@material-ui/core/colors';
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import equals from "validator/lib/equals";

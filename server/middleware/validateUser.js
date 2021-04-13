@@ -1,4 +1,4 @@
-const { validateSignup, validateLogin, validatePassword, validateProfile} = require("../models/SignUp");
+const { validateSignup, validateLogin, validatePassword, validateProfile} = require("../models/User");
 function validateSignupUser(req, res, next) {
   let { error } = validateSignup(req.body);
 

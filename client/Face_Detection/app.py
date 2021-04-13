@@ -13,7 +13,10 @@ def face_detection():
     file = request.files['file']
     npimg = np.fromfile(file, np.uint8)
     img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+    grayimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.equalizeHist(grayimg)
     faces = face_cascade.detectMultiScale(img, 1.1, 4)
+
     if len(faces) == 0:
         return jsonify({
             "errorMessage": "No face detected. Must be a face picture",
@@ -24,14 +27,16 @@ def face_detection():
         }), 200
     else:
         return jsonify({
-            "errorMessage": "More than 1 face are not allowed. Profile image must contain single human face",
+            "errorMessage": "Please use an image which contains a clear face",
         }), 403
 
-    # for (x, y, w, h) in faces:
-    #   cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+# for (x, y, w, h) in faces:
+     #   cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
     #cv2.imshow('img', img)
     # cv2.waitKey()
-
-
 if __name__ == '__main__':
     app.run(port=80, debug=True)
+
+# set FLASK_APP = app.py
+# set FLASK_RUN_PORT = 80

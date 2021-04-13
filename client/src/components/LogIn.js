@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 import {
@@ -24,8 +24,9 @@ import AlertBar from "../Alerts/AlertBar";
 import LinearBuffer from "../Alerts/ProgressBar";
 import { login } from "../api/auth";
 import PageTitle from "./pageTitle";
+import { UserContext } from "../contexts/userContext";
 import { authentication, isAuthenticated } from "../clientStorages/auth";
-
+ 
 const useStyles = makeStyles((theme) => ({
    textField: {
     marginTop: theme.spacing(2),
@@ -35,15 +36,17 @@ const useStyles = makeStyles((theme) => ({
     
   }
 }));
-const LogIn = () => {
+const LogIn = (props) => {
   const classes = useStyles();
   let history = useHistory();
-
+     const {state,dispatch} = useContext(UserContext)
   useEffect(() => {
     if (isAuthenticated() && isAuthenticated().role === 1)
       history.push("/admin/dashboard");
     else if (isAuthenticated() && isAuthenticated().role === 0)
       history.push("/user/dashboard");
+     
+      
   }, [history]);
   const [values, setValues] = useState({
     email: "",
@@ -91,13 +94,15 @@ const LogIn = () => {
 
           if (isAuthenticated() && isAuthenticated().role === 1)
             history.push("/dashboard");
-          else history.push("/dashboard");
+          else {
+        history.push("/dashboard");};
           setValues({ ...values, loading: false });
+            dispatch({type:"USER",payload:response.data.user})
+            console.log(state);
         })
         .catch((err) => {
           setValues({
             ...values,
-            email:"",
             password:"",
             loading: false,
             errorMessage: err.response.data.errorMessage,
@@ -188,7 +193,7 @@ const LogIn = () => {
             fullWidth
             onClick={Register}
           >
-            LOGIN
+            Sign in
           </Button>
            <Link to="/forgot-password" style={{textDecoration:"none",marginLeft:"1rem auto"}}  >Forgot Password?</Link>
    </Paper>
