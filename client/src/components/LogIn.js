@@ -24,7 +24,6 @@ import AlertBar from "../Alerts/AlertBar";
 import LinearBuffer from "../Alerts/ProgressBar";
 import { login } from "../api/auth";
 import PageTitle from "./pageTitle";
-import { UserContext } from "../contexts/userContext";
 import { authentication, isAuthenticated } from "../clientStorages/auth";
  
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 const LogIn = (props) => {
   const classes = useStyles();
   let history = useHistory();
-     const {state,dispatch} = useContext(UserContext)
   useEffect(() => {
     if (isAuthenticated() && isAuthenticated().role === 1)
       history.push("/admin/dashboard");
@@ -97,8 +95,6 @@ const LogIn = (props) => {
           else {
         history.push("/dashboard");};
           setValues({ ...values, loading: false });
-            dispatch({type:"USER",payload:response.data.user})
-            console.log(state);
         })
         .catch((err) => {
           setValues({
