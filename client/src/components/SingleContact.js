@@ -15,10 +15,12 @@ const SingleContact = (props) => {
     const myName =isAuthenticated().firstname + " " +isAuthenticated().lastname;
     const myProfileImg =isAuthenticated().profileImg;
     const myEmail =isAuthenticated().email;
+    const myGender =isAuthenticated().gender;
+    const myLangPreference =isAuthenticated().langPreference;
     const sentFriendRequest=()=>{
         friendService.sendRequest(
             {friendId:contact._id,
-            myId,myName,myProfileImg,myEmail})
+            myId,myName,myProfileImg,myEmail,myGender,myLangPreference})
          .then((data) => {
            localStorage.setItem("user",JSON.stringify(data));
               // dispatch({type:"FRIEND_REQUESTED",payload:{sentRequests:data.sentRequests }})

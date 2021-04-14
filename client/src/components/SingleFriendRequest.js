@@ -8,6 +8,8 @@ const SingleFriendRequest = (props) => {
       const myName =isAuthenticated().firstname + " " +isAuthenticated().lastname;
       const myProfileImg =isAuthenticated().profileImg;
       const myEmail = isAuthenticated().email;
+      const myGender =isAuthenticated().gender;
+      const myLangPreference =isAuthenticated().langPreference;
       const RejectFriendRequest =()=>{
          friendService.rejectRequest({friendId: friendreq.id, myId}) 
           .then((data) => {
@@ -24,7 +26,9 @@ const SingleFriendRequest = (props) => {
          friendProfileImg:friendreq.profileImg, 
           chatId:friendreq.email +"/"+myEmail,
           friendEmail:friendreq.email,
-          myId,myName,myProfileImg,myEmail }) 
+          friendGender:friendreq.gender,
+          friendLangPreference:friendreq.langPreference,
+          myId,myName,myProfileImg,myEmail,myGender,myLangPreference }) 
           .then((data) => {
            onAcceptReject()
              localStorage.setItem("user",JSON.stringify(data));

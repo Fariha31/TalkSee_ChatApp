@@ -29,12 +29,16 @@ const UserSchema = mongoose.Schema(
            profileImg: String, 
            id: String,
            email:String,
+           gender:String,
+           langPreference : String,
            chatId: String 
         }],
     friendRequests:[{
             id: String ,
             email:String, 
             name:String,
+            gender:String,
+            langPreference : String,
             profileImg:String
           }],
     sentRequests: [{type:ObjectId,ref:"User"}]
