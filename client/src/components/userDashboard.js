@@ -15,10 +15,15 @@ const UserDashboard = ( ) => {
    
     <h1> Hi, {Fname + " " + Lname}</h1>
      <Button className= "loginbtn"
-             style={{marginLeft:"20rem"}}
-            variant="contained" 
+             style={{marginLeft:"20rem" ,display:"block"}}
+            variant="outlined" 
+            color="Primary"
             onClick={event =>  window.location.href='/all-contacts'}> Add New friend</Button>
-   
+    <Button className= "loginbtn"
+             style={{marginLeft:"20rem",marginTop:"2rem"}}
+            variant="outlined" 
+            color="Primary"
+            onClick={event =>  window.location.href='/all-my-friends'}> My friend Lists</Button>
       
     </div>
 };

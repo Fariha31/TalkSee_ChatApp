@@ -168,10 +168,10 @@ exports.loginController = async (req, res) => {
      };
     jwt.sign(payload, config.get("jwtPrivateKey"), (err, token) => {
       if (err) console.log("JWT sign error in Login");
-      const { _id, firstname,lastname, email, role,gender, profileImg,langPreference, friends, sentRequests,friendRequests  } = user;
+      const { _id, firstname,lastname, email, role,gender, profileImg,langPreference, friends, sentRequests,friendRequests } = user;
       return  res.json({
         token,
-        user: { _id, firstname,lastname, email, role ,gender, profileImg,langPreference, friends, sentRequests,friendRequests  },
+        user: { _id, firstname,lastname, email, role ,gender, profileImg,langPreference, friends, sentRequests,friendRequests,  },
       });
     });
    } catch (err) {

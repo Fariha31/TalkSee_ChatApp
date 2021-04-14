@@ -12,10 +12,11 @@ import ResetPassword from "./resetPassword";
 import ProfileSetup from "./profileSetup";
 import AllContact from "./AllContacts";
 import AllFriendRequest from "./AllFriendRequest";
-import UserContextProvider from "../contexts/userContext";
+import AllFriends from "./AllFriends";
+import ChatPage from "./ChatPage";
 const App = () => {
   return (
-    <UserContextProvider>
+  
       <BrowserRouter>
         <Switch>
           
@@ -29,11 +30,13 @@ const App = () => {
           <Route exact path="/notfound" component={notFound} />
           <Route exact path ="/all-contacts" component= {AllContact}/>
           <Route exact path = "/all-friend-requests" component ={AllFriendRequest}/>
+          <Route exact path ="/all-my-friends" component= {AllFriends}/>
+          <Route exact path ="/:myEmail/:friendEmail" component ={ChatPage}/>
           <Route exact path="/" component={LogIn}/>
           <Redirect to="/notfound" />
         </Switch>
       </BrowserRouter>
-   </UserContextProvider>
+    
   );
 };
 

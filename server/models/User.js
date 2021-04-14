@@ -28,7 +28,8 @@ const UserSchema = mongoose.Schema(
            name:String,
            profileImg: String, 
            id: String,
-          // chatId: String 
+           email:String,
+           chatId: String 
         }],
     friendRequests:[{
             id: String ,

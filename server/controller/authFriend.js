@@ -46,7 +46,7 @@ exports.cancelFriendRequestController = async (req, res) => {
     })
 }
 exports.acceptFriendRequestController = async (req, res) => {
-    const{friendId,friendName,friendProfileImg, myId,myName,myProfileImg} =req.body
+    const{friendId,friendName,friendProfileImg, friendEmail,chatId,myId,myName,myProfileImg,myEmail} =req.body
       User.findByIdAndUpdate(friendId ,
                 { $pull: { sentRequests:   myId  }},
                 {new:true, useFindAndModify: false
@@ -66,7 +66,8 @@ exports.acceptFriendRequestController = async (req, res) => {
                             name: myName,
                             id: myId,
                             profileImg: myProfileImg,
-                           // chatId: chatDoc._id
+                            email:myEmail,
+                            chatId: chatId
                         }}}
             ,{ new:true, useFindAndModify: false},(err,result)=>{
                   if(err){
@@ -78,15 +79,15 @@ exports.acceptFriendRequestController = async (req, res) => {
                             name: friendName,
                             id: friendId,
                             profileImg: friendProfileImg,
-                            //chatId: chatDoc._id
+                            email:friendEmail,
+                            chatId: chatId
                         }
                     }
                 },
             {new:true, useFindAndModify: false})
             .then(result=>{
-                     return res.status(200).json({
-                    successMessage: "Friend request cancelled"})
-                    }).catch(err=>{
+          res.json(result)
+      }).catch(err=>{
                         return res.status(400).json({
                          errorMessage: "accept FR controller error",
                 });
@@ -130,9 +131,8 @@ exports.deleteFriendController = async (req, res) => {
                 { $pull: { friends: { id: friendId } }},
                  {new:true, useFindAndModify: false})
                 .then(result=>{
-                     return res.status(200).json({
-                    successMessage: "Friend request cancelled"})
-                    }).catch(err=>{
+                  res.json(result)
+                 }).catch(err=>{
                         return res.status(400).json({
                          errorMessage: "accept FR controller error",
     });
@@ -171,3 +171,19 @@ exports.getSentFriendRequestsController =  async (req, res) => {
     
 };
 
+exports.getAllFriendController =  async (req, res) => {
+
+ try {
+    let data = await User.findById(req.params.id, {friends:true});
+    if (!data)
+      return res.status(400).json({
+        errorMessage: "ID is not Present",
+      });
+    return res.send(data.friends);
+  } catch (err) {
+    return res.status(400).json({
+      errorMessage: "Invalid ID",
+    });
+  }
+    
+};

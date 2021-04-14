@@ -1,14 +1,15 @@
 import { Button, Typography,Paper } from "@material-ui/core";
 import { isAuthenticated } from "../clientStorages/auth";
 import friendService from "../services/friendService";
-import { UserContext } from "../contexts/userContext";
 import React, { useState, useContext} from "react";
-import { lightBlue, red} from '@material-ui/core/colors';
+import { lightBlue, grey} from '@material-ui/core/colors';
 const SingleContact = (props) => {
-    const {state,dispatch} = useContext(UserContext)
+     
     const { contact } = props;
     var userData=JSON.parse(localStorage.getItem("user")) 
-    const [showAddBtn, setAddBtn]=useState(userData.sentRequests.includes(contact._id)?false:true)
+      const [showAddBtn, setAddBtn]=useState(userData.sentRequests.includes(contact._id)?false:true)
+     
+  
     //const [showAddBtn, setAddBtn]=useState(state?!state.sentRequests.includes(contact._id):true);
     const myId=isAuthenticated()._id;
     const myName =isAuthenticated().firstname + " " +isAuthenticated().lastname;
@@ -20,7 +21,7 @@ const SingleContact = (props) => {
             myId,myName,myProfileImg,myEmail})
          .then((data) => {
            localStorage.setItem("user",JSON.stringify(data));
-               dispatch({type:"FRIEND_REQUESTED",payload:{sentRequests:data.sentRequests }})
+              // dispatch({type:"FRIEND_REQUESTED",payload:{sentRequests:data.sentRequests }})
              setAddBtn(false)
             
             })
@@ -31,7 +32,7 @@ const SingleContact = (props) => {
             {friendId:contact._id,myId})
          .then((data) => {
              localStorage.setItem("user",JSON.stringify(data));
-             dispatch({type:"FRIEND_REQUESTED",payload:{sentRequests:data.sentRequests }})
+            // dispatch({type:"FRIEND_REQUESTED",payload:{sentRequests:data.sentRequests }})
              setAddBtn(true)
              
          })
@@ -50,7 +51,7 @@ const SingleContact = (props) => {
             onClick={sentFriendRequest}>Add friend</Button>
         : 
         <Button className= "loginbtn"
-              style={{display:"inline-block" ,position:"relative",float:"right" ,marginTop:"1rem", backgroundColor:red[400],color:"white"}}
+              style={{display:"inline-block" ,position:"relative",float:"right" ,marginTop:"1rem", backgroundColor:grey[500],color:"white"}}
             variant="contained" 
             onClick={cancelFriendRequest}>Requested</Button> 
              }

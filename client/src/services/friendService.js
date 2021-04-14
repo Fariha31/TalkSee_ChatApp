@@ -10,7 +10,7 @@ class FriendService extends GenericService {
   deleteFriend  = (data) => this.post("friend/delete-friend", data);
   getFriendRequest =(id) =>  this.get("friend/my-friend-requests/" + id);
   getSentFriendRequest =(id) =>  this.get("friend/sent-friend-requests/" + id);
- 
+  getAllFriends =(id) =>  this.get("friend/my-friends-list/" + id);
 }
 
 let friendService = new FriendService();
