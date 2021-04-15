@@ -263,13 +263,13 @@ return (<div>
     {loading && <LinearBuffer />}
      <PageTitle name= {"Profile Setup"}/>
       {errorMessage && (
-        <AlertBar type="error" message={errorMessage} autoClose={4000} />
+        <AlertBar type="error" message={errorMessage} autoClose={3000} />
       )}
        {infoMessage && (
         <AlertBar type="info" message={infoMessage} autoClose={8000} />
       )}
       {successMsg && (
-        <AlertBar type="success" message={successMsg} autoClose={4000} />
+        <AlertBar type="success" message={successMsg} autoClose={2500} />
       )}
       {ProfilePage()}
     </div>
