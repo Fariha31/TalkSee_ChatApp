@@ -14,6 +14,7 @@ import AllContact from "./AllContacts";
 import AllFriendRequest from "./AllFriendRequest";
 import AllFriends from "./AllFriends";
 import ChatPage from "./ChatPage";
+import UpdateProfileSetup from "./updateProfileSetup";
 const App = () => {
   return (
   
@@ -27,6 +28,7 @@ const App = () => {
           <Route exact path="/dashboard" component={userDashboard} />
           <Route exact path="/forgot-password" component={ForgotPassword} />
           <Route exact path="/profile-setup/:token" component={ProfileSetup}/>
+          <Route exact path="/update-my-profile-setup/:id" component={UpdateProfileSetup}/>
           <Route exact path="/notfound" component={notFound} />
           <Route exact path ="/all-contacts" component= {AllContact}/>
           <Route exact path = "/all-friend-requests" component ={AllFriendRequest}/>

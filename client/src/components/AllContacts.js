@@ -28,10 +28,11 @@ const AllContact = () => {
     .then((data) => { setContacts(data);})
     .catch((err) => {console.log(err);});
   };
+
    useEffect(()=> {
      getAllMyFriends();
      getFriendRequest();
-     getAllContacts()}, []);
+    getAllContacts();}, []);
     
    
     return ( 

@@ -317,7 +317,6 @@ exports.profileSetupController = async (req, res) => {
   const {profileImg, langPreference, token}= req.body;
   try{
    const{email} = jwt.decode(token);
-   console.log(langPreference);
     let user = await User.findOne({email});
     if(user){
     user.profileImg=profileImg;
@@ -337,6 +336,49 @@ exports.profileSetupController = async (req, res) => {
     console.log(err)
     res.status(500).json({
       errorMessage: "Error in Profile Controller",
+    });
+  }
+}
+exports.getMyAccountController = async (req, res) => {
+   try {
+    let user = await User.findById(req.params.id);
+    if (!user)
+      return res.status(400).json({
+        errorMessage: "User with that ID not found",
+      });
+    return res.send(user);
+  } catch (err) {
+    return res.status(400).json({
+      errorMessage: "Invalid ID",
+    });
+  }
+}
+exports.updateProfileSetupController = async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id);
+    user.profileImg = req.body.profileImg;
+    user.langPreference=req.body.langPreference;
+    
+  const friendReq = await User.updateMany(
+    {"friendRequests":{$elemMatch:{id:req.params.id}}} ,
+  {$set:{'friendRequests.$.langPreference':req.body.langPreference,
+  'friendRequests.$.profileImg':req.body.profileImg
+}}
+  );
+  const friends = await User.updateMany(
+    {"friends":{$elemMatch:{id:req.params.id}}} ,
+  {$set:{'friends.$.langPreference':req.body.langPreference,
+'friends.$.profileImg':req.body.profileImg}}
+  );
+await user.save(); 
+  return res.status(200).json({
+      successMessage: "Profile has been successfully Updated",
+      userData:user
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      errorMessage: "Failed to Update Profile",
     });
   }
 }
