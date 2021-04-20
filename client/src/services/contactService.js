@@ -4,7 +4,7 @@ class ContactService extends GenericService {
     super();
   }
   getAllContact = () => this.get("contact/getContact");
-  getSingleContact = (id) => this.get("contact/getContact" + id);
+  getSingleContact = (id) => this.get("contact/get-contact/" + id);
   }
 
 let contactService = new ContactService();

@@ -10,6 +10,8 @@ import {Button} from "@material-ui/core";
 import axios from 'axios';
 import accountService from "../services/accountService";
 import { isAuthenticated } from "../clientStorages/auth";
+import { useHistory } from 'react-router-dom';
+import Header from "./Header";
 const useStyles = makeStyles({
   
   textfield: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles({
 
 const UpdateProfileSetup = ( {match}) => {
     const classes = useStyles();
+    let history =useHistory();
      const myId=isAuthenticated()._id;
 const options = [
   { label: 'Afrikaans',value:'af' },
@@ -199,6 +202,7 @@ const updateProfile =()=>{
  
   const ProfilePage = () =>( 
   <div className="profile-page">
+    
       <div className="profile-container">
           <div className="img-holder">
              <img src={img} className="profile-img"/>
@@ -230,7 +234,8 @@ const updateProfile =()=>{
               backgroundColor:cyan[600],
               fontWeight:"bold", 
               borderRadius:"0.5rem" , 
-              marginTop: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "0.8rem",
               padding: "0.5rem",
                }}
             className= "loginbtn"
@@ -239,30 +244,17 @@ const updateProfile =()=>{
             onClick={updateProfile}
             
           >
-            Set Profile
+            Update Profile
           </Button>
-                   {successMsg &&  <Button
-                     style={{  
-                     backgroundColor:grey[500],
-              fontWeight:"bold", 
-              borderRadius:"1rem" , 
-              marginTop: "0.8rem",
-              padding: "0.5rem",
-               }}
-            className= "loginbtn"
-            variant="outline"
-            fullWidth
-            onClick={event =>  window.location.href='/dashboard'}
-                  >
-                      Back to Dashboard
-                  </Button>}
+                   
       </div>             
   </div>
 )
 return (<div>
     
     {loading && <LinearBuffer />}
-     <PageTitle name= {"Profile Setup"}/>
+    <Header/>
+     <PageTitle name= {"Update Profile "}/>
       {errorMessage && (
         <AlertBar type="error" message={errorMessage} autoClose={3000} />
       )}

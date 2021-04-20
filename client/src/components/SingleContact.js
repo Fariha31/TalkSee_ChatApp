@@ -42,7 +42,7 @@ const SingleContact = (props) => {
     }
     return (
         <div>
-       <Paper style={{padding: '10px 24px'}} >
+       <Paper style={{padding: '10px 20px', marginBottom:"2rem"}} >
               <img src={contact.profileImg}  className="img-fluid rounded-circle p-2"
           style={{ width: "4.9em" ,display:"inline" }}/>
               <h4   style={{display:"inline"  }}>{contact.firstname + " "+ contact.lastname}</h4>
@@ -59,7 +59,7 @@ const SingleContact = (props) => {
              }
         <Typography style={{color:"gray",marginLeft:"5rem" ,  fontStyle: "italic" , fontSize:"0.9rem" }}>{contact.email}</Typography>
      </Paper> 
-    <hr/>
+   
           
    
     </div>);

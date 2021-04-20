@@ -6,8 +6,10 @@ import {Button, Grid} from "@material-ui/core";
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import PageTitle from "./pageTitle";
+import { useHistory } from 'react-router-dom';
 const Activate = ({ match }) => {
  let token1 = match.params.token;
+ let history = useHistory()
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -65,7 +67,7 @@ const Activate = ({ match }) => {
               padding: "0.5rem" }}
               variant="contained"
               className= "loginbtn"
-              onClick={event =>  window.location.href='/profile-setup/'+token1}
+              onClick={event =>   history.push('/profile-setup/'+token1)}
              
           >
             Create Profile
@@ -97,7 +99,7 @@ const Activate = ({ match }) => {
               padding: "0.5rem" }}
             variant="contained"
              className= "loginbtn"
-            onClick={event =>  window.location.href='/signup'}
+            onClick={event =>   history.push('/signup')}
              
           >
                Try  Again   

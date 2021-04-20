@@ -54,6 +54,7 @@
 
 /**ProfileSetup*/
 .profile-page {
+  margin-top: 10px;
   height: 40vh;
   display: flex;
   align-items: center;

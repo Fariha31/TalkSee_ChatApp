@@ -18,7 +18,7 @@ const SingleFriend = (props) => {
       } 
     return (
         <div>
-       <Paper style={{padding: '10px 24px'}} >
+       <Paper style={{padding: '10px 24px',marginBottom:"2rem"}} >
               <img src={friend.profileImg}  className="img-fluid rounded-circle p-2"
           style={{ width: "4.9em" ,display:"inline" }}/>
               <h4   style={{display:"inline"  }}>{friend.name}</h4>
@@ -41,7 +41,6 @@ const SingleFriend = (props) => {
            
           </div>
                </Paper> 
-    <hr/>
           
    
     </div>);

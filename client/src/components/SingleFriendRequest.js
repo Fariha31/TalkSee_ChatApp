@@ -3,7 +3,7 @@ import { isAuthenticated } from "../clientStorages/auth";
 import friendService from "../services/friendService";
 import { lightBlue,grey} from '@material-ui/core/colors';
 const SingleFriendRequest = (props) => {
-      const { friendreq ,onAcceptReject} = props;
+      const { friendreq ,onAccept,onReject} = props;
       const myId=isAuthenticated()._id;
       const myName =isAuthenticated().firstname + " " +isAuthenticated().lastname;
       const myProfileImg =isAuthenticated().profileImg;
@@ -13,7 +13,7 @@ const SingleFriendRequest = (props) => {
       const RejectFriendRequest =()=>{
          friendService.rejectRequest({friendId: friendreq.id, myId}) 
           .then((data) => {
-           onAcceptReject()
+           onReject()
              localStorage.setItem("user",JSON.stringify(data));
              })
          .catch((err) => {console.log(err);});
@@ -30,16 +30,15 @@ const SingleFriendRequest = (props) => {
           friendLangPreference:friendreq.langPreference,
           myId,myName,myProfileImg,myEmail,myGender,myLangPreference }) 
           .then((data) => {
-           onAcceptReject()
+           onAccept()
              localStorage.setItem("user",JSON.stringify(data));
-             console.log(data);
              })
          .catch((err) => {console.log(err);});
       } 
 
       return (
           <div>
-       <Paper style={{padding: '15px 24px'}} >
+       <Paper style={{padding: '10px 24px',marginBottom:"2rem"}} >
               <img src={friendreq.profileImg}  className="img-fluid rounded-circle p-2"
           style={{ width: "4.9em" ,display:"inline" }}/>
            <h4   style={{display:"inline" }}>{friendreq.name}</h4>

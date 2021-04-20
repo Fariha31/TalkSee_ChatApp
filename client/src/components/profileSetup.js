@@ -9,6 +9,7 @@ import { grey, cyan} from '@material-ui/core/colors';
 import {Button} from "@material-ui/core";
 import axios from 'axios';
 import accountService from "../services/accountService";
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles({
   
   textfield: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles({
 
 const ProfileSetup = ( {match}) => {
     const classes = useStyles();
+      let history = useHistory();
 const options = [
   { label: 'Afrikaans',value:'af' },
   { label: 'Albanian',value:'sq'},
@@ -251,7 +253,7 @@ const SetProfile =()=>{
             className= "loginbtn"
             variant="outline"
             fullWidth
-            onClick={event =>  window.location.href='/login'}
+            onClick={event =>  history.push('/login')}
                   >
                       Login
                   </Button>}
