@@ -1,7 +1,7 @@
 import { Button, Typography,Paper } from "@material-ui/core";
 import { isAuthenticated } from "../clientStorages/auth";
 import friendService from "../services/friendService";
-import React, { useState, useContext} from "react";
+import React, { useState} from "react";
 import { lightBlue, grey} from '@material-ui/core/colors';
 const SingleContact = (props) => {
      

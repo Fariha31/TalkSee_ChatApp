@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "./Header";
 import { isAuthenticated } from "../clientStorages/auth";
 import { Button } from "@material-ui/core";
