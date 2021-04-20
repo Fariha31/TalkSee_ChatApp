@@ -6,6 +6,7 @@ import PageTitle from "./pageTitle";
 import { isAuthenticated } from "../clientStorages/auth";
 import { useHistory } from 'react-router-dom';
 import Header from "./Header";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 const AllFriendRequest = () => {
      const myId=isAuthenticated()._id;
      let history = useHistory()
@@ -29,13 +30,19 @@ const AllFriendRequest = () => {
     padding: "6rem", fontWeight:"bold"}}>No Friend Request</div>) 
         :
         (
-        <Grid container   style={{marginTop:"3rem"}}>
+        <Grid container   style={{marginTop:"3rem",display:"flex"}}>
           <Grid item xs ={1} md={3}> </Grid>
           <Grid item xs ={10} md={6}>
           {
           friendreqs.map((friendreq, index) => (
                <SingleFriendRequest key={index} friendreq={friendreq} onAccept={getFriendRequest} onReject={getFriendRequest} /> )
           )}
+           <Button className= "loginbtn"
+            style={{textTransform:"capitalize",float:"left"}}
+            variant="outlined" 
+            color="Primary"
+            onClick={event =>  history.push('/all-contacts')}><ArrowBackIcon/> Back</Button>
+         
           
           </Grid>
           <Grid item xs={1}   md={3}></Grid>
