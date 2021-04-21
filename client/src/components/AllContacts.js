@@ -49,7 +49,7 @@ const AllContact = () => {
            { contacts.map((contact, index) => {
               return contact._id === myId ? 
               <div style= {{textAlign: "center",padding: "4rem"}}>
-               Hey <span style ={{fontWeight:"bold"}}> {contact.firstname + " " + contact.lastname}</span> , All are your Friends <Link style ={{ fontWeight:"normal"}} to="/all-my-friends" >Click here</Link>
+               Hey <span style ={{fontWeight:"bold"}}> {contact.firstname + " " + contact.lastname}</span> , All users are your Friends <Link style ={{ fontWeight:"normal"}} to="/all-my-friends" >Click here</Link>
               </div>
             : <SingleContact key={index} contact={contact}/>
             } )
