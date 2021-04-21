@@ -3,7 +3,7 @@ import { isAuthenticated } from "../clientStorages/auth";
 import friendService from "../services/friendService";
 import { lightBlue,grey} from '@material-ui/core/colors';
 const SingleFriendRequest = (props) => {
-      const { friendreq ,onAccept,onReject} = props;
+      const { friendreq ,onAcceptReject} = props;
       const myId=isAuthenticated()._id;
       const myName =isAuthenticated().firstname + " " +isAuthenticated().lastname;
       const myProfileImg =isAuthenticated().profileImg;
@@ -13,8 +13,8 @@ const SingleFriendRequest = (props) => {
       const RejectFriendRequest =()=>{
          friendService.rejectRequest({friendId: friendreq.id, myId}) 
           .then((data) => {
-           onReject()
              localStorage.setItem("user",JSON.stringify(data));
+             onAcceptReject();
              })
          .catch((err) => {console.log(err);});
       } 
@@ -30,8 +30,9 @@ const SingleFriendRequest = (props) => {
           friendLangPreference:friendreq.langPreference,
           myId,myName,myProfileImg,myEmail,myGender,myLangPreference }) 
           .then((data) => {
-           onAccept()
+           
              localStorage.setItem("user",JSON.stringify(data));
+             onAcceptReject()
              })
          .catch((err) => {console.log(err);});
       } 
