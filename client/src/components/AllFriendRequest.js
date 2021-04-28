@@ -1,17 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import SingleFriendRequest from "./SingleFriendRequest";
 import friendService from "../services/friendService";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid,InputAdornment, TextField } from "@material-ui/core";
 import PageTitle from "./pageTitle";
 import { isAuthenticated } from "../clientStorages/auth";
 import { useHistory } from 'react-router-dom';
 import Header from "./Header";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { grey } from '@material-ui/core/colors';
+import SearchIcon from '@material-ui/icons/Search';
 const AllFriendRequest = () => {
-     const myId=isAuthenticated()._id;
-     let history = useHistory()
-     const [friendreqs, setFrndRequest] =React.useState([]);
-     const getFriendRequest = () => 
+    const myId=isAuthenticated()._id;
+    let history = useHistory()
+    const [friendreqs, setFrndRequest] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const onChangeSearch = (event) => 
+        setSearchTerm(event.currentTarget.value)
+    const getFriendRequest = () => 
      {
       friendService.getFriendRequest(myId).then((data)=>{
                 setFrndRequest(data)})
@@ -23,7 +28,27 @@ const AllFriendRequest = () => {
     <div>
            <Header/>
       <PageTitle name= {"Friend Requests"}/>
-  
+  <Grid container   style={{display:"flex" ,marginTop:"1.8rem",justifyContent:"center"}}>
+          <Grid item xs ={1} md={5}> </Grid>
+          <Grid item xs ={10} md={4}  >
+            <TextField
+                value={searchTerm}
+                onChange={onChangeSearch}
+                placeholder="Search By Name..."
+                variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="end">
+             <SearchIcon style={{ color: grey[600] ,marginRight:"0.4rem",float:"right"}}/>
+            </InputAdornment>
+          ),
+         }}
+            />
+            </Grid>
+              <Grid item xs ={1} md={4}> </Grid>
+            </Grid>
+          
+   
      {
       friendreqs.length === 0 ? 
         ( <div style= {{textAlign: "center",
@@ -34,7 +59,12 @@ const AllFriendRequest = () => {
           <Grid item xs ={1} md={3}> </Grid>
           <Grid item xs ={10} md={6}>
           {
-          friendreqs.map((friendreq, index) => (
+          friendreqs.filter((friendreq)=>{
+             if(searchTerm == "") return friendreq
+             else if (friendreq.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                return friendreq
+             }
+           }).map((friendreq, index) => (
                <SingleFriendRequest key={index} friendreq={friendreq} onAcceptReject={getFriendRequest}/> )
           )}
           </Grid>
