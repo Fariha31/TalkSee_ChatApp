@@ -10,8 +10,8 @@ import {Button} from "@material-ui/core";
 import axios from 'axios';
 import accountService from "../services/accountService";
 import { isAuthenticated } from "../clientStorages/auth";
-import { useHistory } from 'react-router-dom';
 import Header from "./Header";
+import Webcam from "react-webcam";
 const useStyles = makeStyles({
   
   textfield: {
@@ -24,10 +24,11 @@ const useStyles = makeStyles({
 
 
 
-const UpdateProfileSetup = ( {match}) => {
+const UpdateProfileSetup = ( ) => {
     const classes = useStyles();
-    let history =useHistory();
      const myId=isAuthenticated()._id;
+      const webcamRef = React.useRef(null);
+     const [capturedPic, setCapturedPic]=React.useState(false);
 const options = [
   { label: 'Afrikaans',value:'af' },
   { label: 'Albanian',value:'sq'},
@@ -137,6 +138,7 @@ const options = [
   {label:'Zulu',value: "zu"},
   
 ];
+ 
     const [values, setValues] = useState({
     img: "",
     language:"",
@@ -158,6 +160,34 @@ const resizeFile = (file) => new Promise(resolve => {
     Resizer.imageFileResizer(file, 300, 300, 'JPEG', 100, 0,
     uri => {resolve(uri);},'base64' );
 });
+const capture =  React.useCallback(() => {
+   try{
+      const imageSrc = webcamRef.current.getScreenshot();
+       setValues({...values, infoMessage: "Picture Captured"}); 
+       setCapturedPic(true);
+       const data = new FormData();
+       data.append("file", imageSrc);
+       axios.post("http://127.0.0.1:5000/webcam-face-detection",data)
+         .then(async (response) => {
+          setValues({ ...values , errorMessage :"", successMsg:response.data.successMessage})
+           setValues({...values, infoMessage: "Loading.... "});
+           data.append("file", imageSrc);
+           data.append("upload_preset", "TalkSee");
+          fetch("https://api.cloudinary.com/v1_1/fariha31/image/upload",
+              { method: "PUT",
+                body: data,
+             } ).then(response => response.json())
+      .then(data =>   setValues({ ...values , img: data.url}))
+      .catch(err => console.error('Error:', err));;   
+           }
+        )
+         }
+ catch(err)
+     {setValues({...values, errorMessage: "error in uploading photo"}); }
+    
+    },
+    [webcamRef]
+  );
  const uploadImage = async (e) => {
   try {
            const imageFile = e.target.files[0];
@@ -209,12 +239,16 @@ const updateProfile =()=>{
               </div>
              <input type="file" accept="image/*" name="image-upload" id="input" onChange={uploadImage}  />
              <div className="label">
-                   <label className="image-upload" htmlFor="input">
+            <label className="image-upload" htmlFor="input">
 						<i className="material-icons">add_photo_alternate</i>
 						Choose Profile Photo
 					</label>
-                 </div>
-                  
+                 </div> 
+             <div className="label">   
+             <button className="take-photo loginbtn"  data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>setCapturedPic(false)}>
+               <i className="material-icons" style ={{marginRight:"0.2rem"}}>photo_camera</i>
+               Take Photo</button> 
+              </div>
               <Select
                     style={{ width: 210, padding: "0.4rem" }}
                     placeholder="Select Language ---"
@@ -247,7 +281,40 @@ const updateProfile =()=>{
             Update Profile
           </Button>
                    
-      </div>             
+      </div> 
+                
+  
+<div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h3 className="modal-title" id="exampleModalLongTitle">Take Photo</h3>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div className="modal-body">
+        <div  className="webcam-container">
+         <Webcam  
+        audio={false}
+        height= {200}
+       width ={460}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg" />
+        </div>
+      </div>
+       
+        {capturedPic ? (<div className="modal-footer"> 
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div> ):
+        (<div className="modal-footer"> 
+        <button  className="take-photo loginbtn" onClick ={capture}>
+          <i className="material-icons" style ={{marginRight:"0.2rem"}}>
+            photo_camera</i>Capture photo</button> </div>)
+        }
+    </div>
+  </div>
+</div>             
   </div>
 )
 return (<div>
