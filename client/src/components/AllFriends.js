@@ -67,7 +67,7 @@ const AllFriends = () => {
           {
           friends.filter((friend)=>{
              if(searchTerm == "") return friend
-             else if (friend.name.toLowerCase().istartsWith(searchTerm.toLowerCase()))
+             else if (friend.name.toLowerCase().startsWith(searchTerm.toLowerCase()))
                 return friend
            }).map((friend, index) => (
                <SingleFriend key={index} friend={friend} onRemove={getAllMyFriends} /> )
