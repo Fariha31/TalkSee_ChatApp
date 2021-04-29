@@ -61,9 +61,8 @@ const AllFriendRequest = () => {
           {
           friendreqs.filter((friendreq)=>{
              if(searchTerm == "") return friendreq
-             else if (friendreq.name.toLowerCase().includes(searchTerm.toLowerCase())){
+             else if (friendreq.name.toLowerCase().startsWith(searchTerm.toLowerCase()))
                 return friendreq
-             }
            }).map((friendreq, index) => (
                <SingleFriendRequest key={index} friendreq={friendreq} onAcceptReject={getFriendRequest}/> )
           )}

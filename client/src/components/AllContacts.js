@@ -74,9 +74,8 @@ const AllContact = () => {
            { 
            contacts.filter((contact)=>{
              if(searchTerm == "") return contact
-             else if (contact.firstname.toLowerCase().includes(searchTerm.toLowerCase())){
+             else if (contact.firstname.toLowerCase().startsWith(searchTerm.toLowerCase()) || contact.lastname.toLowerCase().startsWith(searchTerm.toLowerCase()) )
                 return contact
-             }
            }).map((contact, index) => {
               return contact._id === myId ? 
               <div >
@@ -89,7 +88,7 @@ const AllContact = () => {
           <Grid item xs={1}   md={3}></Grid>
         </Grid>)}
       )
-          <Grid container   style={{display:"flex"}}>
+          <Grid container   style={{display:"flex",marginBottom:"1rem"}}>
           <Grid item xs ={1} md={3}> </Grid>
           <Grid item xs ={10} md={6}>
        <Button className= "loginbtn"
